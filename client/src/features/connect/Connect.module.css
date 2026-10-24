@@ -39,12 +39,19 @@
 
 .entry {
   border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: var(--space-4);
   background: var(--color-surface);
   display: flex;
   flex-direction: column;
 }
+
+/* Kind border colors */
+.entry[data-kind="group"]    { border-left-color: #2563eb; }
+.entry[data-kind="event"]    { border-left-color: #16a34a; }
+.entry[data-kind="petition"] { border-left-color: #dc2626; }
+.entry[data-kind="project"]  { border-left-color: #d97706; }
 
 .kind {
   display: inline-block;
@@ -54,11 +61,24 @@
   letter-spacing: 0.04em;
   padding: 2px 8px;
   border-radius: 999px;
-  background: var(--color-primary-soft);
-  color: var(--color-primary);
   align-self: flex-start;
   margin-bottom: var(--space-2);
+  /* default fallback — overridden per kind below */
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
 }
+
+/* Kind badge colors — background tint + matching text */
+[data-kind="group"]    .kind { background: rgba(37, 99, 235, 0.12); color: #1d4ed8; }
+[data-kind="event"]    .kind { background: rgba(22, 163, 74, 0.12); color: #15803d; }
+[data-kind="petition"] .kind { background: rgba(220, 38, 38, 0.12); color: #b91c1c; }
+[data-kind="project"]  .kind { background: rgba(217, 119, 6, 0.12); color: #b45309; }
+
+/* Dark mode text adjustments */
+[data-theme="dark"] [data-kind="group"]    .kind { color: #93b4ff; }
+[data-theme="dark"] [data-kind="event"]    .kind { color: #86efac; }
+[data-theme="dark"] [data-kind="petition"] .kind { color: #fca5a5; }
+[data-theme="dark"] [data-kind="project"]  .kind { color: #fcd34d; }
 
 .entryTitle {
   margin: 0 0 var(--space-1);

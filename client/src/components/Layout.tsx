@@ -34,11 +34,14 @@ export default function Layout({ children }: { children: ReactNode }) {
               <NavLink
                 key={s.id}
                 to={s.path}
+                data-section={s.id}
                 className={({ isActive }) =>
                   isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink
                 }
               >
-                {s.title}
+                <span style={{ textTransform: "uppercase", fontSize: "0.95rem", letterSpacing: "0.04em" }}>
+                  {s.title}
+                </span>
               </NavLink>
             ))}
           </nav>

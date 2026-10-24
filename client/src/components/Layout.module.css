@@ -31,7 +31,7 @@
 }
 
 .brand strong {
-  color: var(--color-primary);
+  color: #388557;
 }
 
 .brandMark {
@@ -58,10 +58,38 @@
   color: var(--color-text);
 }
 
+/* Active state — default fallback (uses primary) */
 .navLinkActive {
   color: var(--color-primary);
   background: var(--color-primary-soft);
 }
+
+/* Per-section active colors matching the home page cards */
+.navLinkActive[data-section="voting"] {
+  background: var(--card-voting);
+  color: #2a4a8a;
+}
+
+.navLinkActive[data-section="tweets"] {
+  background: var(--card-tweets);
+  color: #1a5c40;
+}
+
+.navLinkActive[data-section="causes"] {
+  background: var(--card-causes);
+  color: #8a3a1a;
+}
+
+.navLinkActive[data-section="connect"] {
+  background: var(--card-connect);
+  color: #5a2a8a;
+}
+
+/* Dark mode text adjustments for active nav links */
+[data-theme="dark"] .navLinkActive[data-section="voting"] { color: #93b4ff; }
+[data-theme="dark"] .navLinkActive[data-section="tweets"] { color: #86efac; }
+[data-theme="dark"] .navLinkActive[data-section="causes"] { color: #fdba74; }
+[data-theme="dark"] .navLinkActive[data-section="connect"] { color: #d8b4fe; }
 
 .skipLink {
   position: absolute;
@@ -84,3 +112,20 @@
     width: 100%;
   }
 }
+
+/* Per-section text colors — always visible, not just on active */
+.navLink[data-section="voting"]  { color: #2a4a8a; }
+.navLink[data-section="tweets"]  { color: #1a5c40; }
+.navLink[data-section="causes"]  { color: #8a3a1a; }
+.navLink[data-section="connect"] { color: #5a2a8a; }
+
+.navLink[data-section="voting"]:hover  { color: #2a4a8a; }
+.navLink[data-section="tweets"]:hover  { color: #1a5c40; }
+.navLink[data-section="causes"]:hover  { color: #8a3a1a; }
+.navLink[data-section="connect"]:hover { color: #5a2a8a; }
+
+/* Dark mode — lighter tints for contrast on dark backgrounds */
+[data-theme="dark"] .navLink[data-section="voting"]  { color: #93b4ff; }
+[data-theme="dark"] .navLink[data-section="tweets"]  { color: #86efac; }
+[data-theme="dark"] .navLink[data-section="causes"]  { color: #fdba74; }
+[data-theme="dark"] .navLink[data-section="connect"] { color: #d8b4fe; }

@@ -115,7 +115,7 @@ function EntryGrid({ entries }: { entries: ConnectEntry[] }) {
   return (
     <div className={styles.grid}>
       {entries.map((e) => (
-        <article key={e.id} className={styles.entry}>
+        <article key={e.id} className={styles.entry} data-kind={e.kind}>
           <span className={styles.kind}>{KIND_LABEL[e.kind]}</span>
           <h3 className={styles.entryTitle}>{e.title}</h3>
           <p className={styles.meta}>

@@ -4,12 +4,17 @@
 }
 
 .title {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 800;
+  font-size: clamp(2.8rem, 6vw, 4.2rem);
   margin-bottom: var(--space-4);
 }
 
-.title span {
-  color: var(--color-primary);
+.titleAccent {
+  background: linear-gradient(90deg, #0D4F8B 0%, #4A7C59 50%, #9B1B30 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .subtitle {

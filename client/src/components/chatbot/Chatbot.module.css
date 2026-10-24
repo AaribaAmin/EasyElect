@@ -35,7 +35,7 @@
 
 .userMsg {
   align-self: flex-end;
-  background: var(--color-primary);
+  background: #388557;
   color: var(--color-primary-contrast);
 }
 
@@ -75,8 +75,8 @@
 }
 
 .sendBtn {
-  border: 1px solid var(--color-primary);
-  background: var(--color-primary);
+  border: 1px solid #388557;
+  background: #388557;
   color: var(--color-primary-contrast);
   border-radius: 999px;
   padding: var(--space-3) var(--space-5);
