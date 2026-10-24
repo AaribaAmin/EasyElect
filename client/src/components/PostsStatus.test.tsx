@@ -5,7 +5,7 @@ import PostsStatus, { POSTS_USAGE_NOTICE } from "./PostsStatus";
 import TweetsPage from "../pages/TweetsPage";
 import { SettingsProvider } from "../context/SettingsContext";
 import { FollowProvider } from "../context/FollowContext";
-import type { PostsSource, Tweet, TweetsResponse } from "../types/domain";
+import type { News_Item, PostsSource, TweetsResponse } from "../types/domain";
 
 /**
  * Task 14.4 — the usage/attribution ToS notice (Req 11.6) must render wherever
@@ -14,18 +14,15 @@ import type { PostsSource, Tweet, TweetsResponse } from "../types/domain";
  * report) and end-to-end through `TweetsPage` with a mocked Data_API envelope.
  */
 
-function samplePost(overrides: Partial<Tweet> = {}): Tweet {
+function samplePost(overrides: Partial<News_Item> = {}): News_Item {
   return {
     id: "post-1",
-    candidateId: "maura-healey",
-    authorName: "Maura Healey",
-    authorHandle: "maura_healey",
-    text: "Fighting for affordable housing across the Commonwealth.",
+    candidateIds: ["maura-healey"],
+    title: "Healey pushes for affordable housing across the Commonwealth",
+    outlet: "Boston Globe",
+    url: "https://example.com/posts/post-1",
     date: "2024-09-01T12:00:00.000Z",
-    likes: 12,
-    reposts: 3,
     tabs: ["recent"],
-    sourceUrl: "https://example.com/posts/post-1",
     ...overrides,
   };
 }

@@ -11,7 +11,7 @@ import FollowButton from "../features/voting/FollowButton";
 import { SettingsProvider } from "../context/SettingsContext";
 import { FollowProvider } from "../context/FollowContext";
 import { CausesProvider } from "../context/CausesContext";
-import type { Tweet } from "../types/domain";
+import type { News_Item } from "../types/domain";
 
 /**
  * Reduced-motion and focus-indicator tests for the minimalist visual redesign
@@ -37,9 +37,10 @@ import type { Tweet } from "../types/domain";
  *      referencing a color token — the unfocused state has no such outline, so
  *      the focused state is visually distinct.
  *   3. Color-not-alone (Req 9.7): color-coded states also carry text or a
- *      labeled icon — tweet markers sit next to numeric counts and the "Added
- *      context" literal label; the theme toggle has an aria-label; FollowButton
- *      conveys its state through label text, not color alone.
+ *      labeled icon — the News card's context marker sits next to the "Added
+ *      context" literal label (and the outlet/article link are literal text);
+ *      the theme toggle has an aria-label; FollowButton conveys its state
+ *      through label text, not color alone.
  *
  * _Requirements: 9.3, 9.4, 9.7_
  */
@@ -230,17 +231,16 @@ function renderWithProviders(ui: ReactElement) {
   );
 }
 
-/** A minimal Tweet fixture (see ../types/domain). */
-const sampleTweet: Tweet = {
+/** A minimal News_Item fixture (see ../types/domain). */
+const sampleTweet: News_Item = {
   id: "t1",
-  candidateId: "c1",
-  authorName: "Jane Candidate",
-  authorHandle: "@jane",
-  text: "A post about the issues that matter.",
+  candidateIds: ["c1"],
+  title: "A report on the issues that matter",
+  outlet: "Commonwealth Beacon",
+  url: "https://example.com/post/t1",
   date: "2024-10-01",
-  likes: 1234,
-  reposts: 56,
   tabs: ["recent"],
+  context: { simple: "Context in plain terms.", expert: "Context in detail." },
 };
 
 beforeEach(() => {
@@ -258,25 +258,28 @@ beforeEach(() => {
 });
 
 describe("color-not-alone — TweetCard markers carry text alongside icons (Req 9.7)", () => {
-  it("renders like/repost icons next to their numeric counts as text", () => {
+  it("renders the added-context info icon as a vector alongside its literal label", () => {
     const { container } = renderWithProviders(
       <TweetCard tweet={sampleTweet} showContext />
     );
 
-    // The icons render as vectors (not emoji/color-only markers).
-    expect(container.querySelectorAll("svg").length).toBeGreaterThanOrEqual(2);
+    // The context marker renders as a vector icon (not an emoji/color-only
+    // marker).
+    expect(container.querySelectorAll("svg").length).toBeGreaterThanOrEqual(1);
 
-    // The numeric counts are present as literal text, so the like/repost
-    // meaning is conveyed by text, not by the icon color alone.
-    expect(screen.getByText(/1,234/)).toBeInTheDocument();
-    expect(screen.getByText(/56/)).toBeInTheDocument();
+    // "Added context" is a literal label, so the context region's meaning is
+    // conveyed by text, not by the icon color alone.
+    expect(screen.getByText(/added context/i)).toBeInTheDocument();
   });
 
-  it('the "Added context" indicator is literal text alongside its info icon', () => {
+  it("renders the outlet and a labeled 'Read article' link as text", () => {
     renderWithProviders(<TweetCard tweet={sampleTweet} showContext />);
-    // "Added context" is a literal label, so the context region's meaning is
-    // not carried by color alone.
-    expect(screen.getByText(/added context/i)).toBeInTheDocument();
+    // The outlet name and the article link are literal text, so the card's
+    // meaning is not carried by color alone.
+    expect(screen.getByText(/commonwealth beacon/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /read article/i })
+    ).toBeInTheDocument();
   });
 });
 

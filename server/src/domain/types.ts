@@ -79,7 +79,38 @@ export interface Issue {
 
 export type TweetTab = "recent" | "notable" | "needsContext" | "interactions";
 
-/** A curated, real post attributed to its author. */
+/**
+ * A curated, verified news item relevant to one or more candidates.
+ *
+ * This replaces the x.com-`Tweet` shape for the (repurposed) News section. The
+ * section serves real, publicly published articles instead of social posts, so
+ * an item carries a headline, outlet, resolvable source URL, and publication
+ * date, and may be tied to one or more candidates (any-of matching for the
+ * party/follow filters and followed-first ordering).
+ */
+export interface News_Item {
+  id: string;
+  /** One or more candidate ids (no duplicates), each matching a Candidate.id. */
+  candidateIds: string[];
+  /** The article headline. */
+  title: string;
+  /** The publisher / source name, e.g. "Boston Globe". */
+  outlet: string;
+  /** Resolvable HTTP/HTTPS link to the article (Verified_Source). */
+  url: string;
+  /** Publication date, ISO 8601. */
+  date: string;
+  /** Which tabs this item appears in (one or more). */
+  tabs: TweetTab[];
+  /** Optional neutral clarification shown on the Needs Context tab. */
+  context?: Explain;
+}
+
+/**
+ * @deprecated x.com-post shape retained only so the (dead-but-present) live
+ * provider pipeline and its tests keep compiling until later tasks retire them.
+ * The News section is served as `News_Item[]`; do not use this for new code.
+ */
 export interface Tweet {
   id: string;
   /** Candidate id this post is attributed to (links to Candidate.id). */
@@ -110,7 +141,7 @@ export type PostsSource = "live" | "cache" | "fallback";
 
 /** Envelope returned by GET /tweets: the posts plus where they came from. */
 export interface TweetsResponse {
-  posts: Tweet[];
+  posts: News_Item[];
   source: PostsSource;
 }
 

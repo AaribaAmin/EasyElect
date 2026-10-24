@@ -22,9 +22,9 @@ import type {
   Candidate,
   CandidateStance,
   Explain,
+  News_Item,
   Party,
   SourceAttribution,
-  Tweet,
   TweetTab,
   TweetsResponse,
 } from "../types/domain";
@@ -209,79 +209,82 @@ export function validateCandidate(
 }
 
 /**
- * Validate the `Tweet` shape against the client domain type. Required fields:
- * `id`, `candidateId`, `authorName`, `authorHandle`, `text`, `date` (strings),
- * `likes`, `reposts` (finite numbers), `tabs` (TweetTab[]). Optional:
- * `context` (Explain), `inReplyTo`, `sourceUrl` (strings). A missing, renamed,
- * or wrong-typed field yields a type-mismatch error.
+ * Validate the `News_Item` shape against the client domain type. Required
+ * fields: `id`, `title`, `outlet`, `url`, `date` (non-empty strings),
+ * `candidateIds` (non-empty array of non-empty strings), `tabs` (non-empty
+ * `TweetTab[]`). Optional: `context` (Explain). A missing, renamed, or
+ * wrong-typed field — or an empty string/array where content is required —
+ * yields a type-mismatch error.
  */
-export function validateTweet(value: unknown, path = "tweet"): ShapeResult<Tweet> {
+export function validateNewsItem(
+  value: unknown,
+  path = "newsItem"
+): ShapeResult<News_Item> {
   if (!isRecord(value)) return { valid: false, error: mismatch(path, "object") };
 
-  for (const key of [
-    "id",
-    "candidateId",
-    "authorName",
-    "authorHandle",
-    "text",
-    "date",
-  ] as const) {
-    if (typeof value[key] !== "string")
-      return { valid: false, error: mismatch(`${path}.${key}`, "string") };
+  for (const key of ["id", "title", "outlet", "url", "date"] as const) {
+    if (typeof value[key] !== "string" || value[key] === "")
+      return {
+        valid: false,
+        error: mismatch(`${path}.${key}`, "non-empty string"),
+      };
   }
 
-  for (const key of ["likes", "reposts"] as const) {
-    if (typeof value[key] !== "number" || !Number.isFinite(value[key]))
-      return { valid: false, error: mismatch(`${path}.${key}`, "number") };
+  if (!Array.isArray(value.candidateIds) || value.candidateIds.length === 0)
+    return {
+      valid: false,
+      error: mismatch(`${path}.candidateIds`, "non-empty string[]"),
+    };
+  for (let i = 0; i < value.candidateIds.length; i++) {
+    const id = value.candidateIds[i];
+    if (typeof id !== "string" || id === "")
+      return {
+        valid: false,
+        error: mismatch(`${path}.candidateIds[${i}]`, "non-empty string"),
+      };
   }
 
-  if (!Array.isArray(value.tabs))
-    return { valid: false, error: mismatch(`${path}.tabs`, "TweetTab[]") };
+  if (!Array.isArray(value.tabs) || value.tabs.length === 0)
+    return {
+      valid: false,
+      error: mismatch(`${path}.tabs`, "non-empty TweetTab[]"),
+    };
   for (let i = 0; i < value.tabs.length; i++) {
     const tab = value.tabs[i];
     if (typeof tab !== "string" || !TWEET_TABS.includes(tab as TweetTab))
       return {
         valid: false,
-        error: mismatch(`${path}.tabs[${i}]`, `one of TweetTab (${TWEET_TABS.join(", ")})`),
+        error: mismatch(
+          `${path}.tabs[${i}]`,
+          `one of TweetTab (${TWEET_TABS.join(", ")})`
+        ),
       };
   }
 
-  const tweet: Tweet = {
+  const item: News_Item = {
     id: value.id as string,
-    candidateId: value.candidateId as string,
-    authorName: value.authorName as string,
-    authorHandle: value.authorHandle as string,
-    text: value.text as string,
+    candidateIds: value.candidateIds as string[],
+    title: value.title as string,
+    outlet: value.outlet as string,
+    url: value.url as string,
     date: value.date as string,
-    likes: value.likes as number,
-    reposts: value.reposts as number,
     tabs: value.tabs as TweetTab[],
   };
 
   if (value.context !== undefined) {
     const context = validateExplain(value.context, `${path}.context`);
     if (!context.valid) return context;
-    tweet.context = context.value;
-  }
-  if (value.inReplyTo !== undefined) {
-    if (typeof value.inReplyTo !== "string")
-      return { valid: false, error: mismatch(`${path}.inReplyTo`, "string") };
-    tweet.inReplyTo = value.inReplyTo;
-  }
-  if (value.sourceUrl !== undefined) {
-    if (typeof value.sourceUrl !== "string")
-      return { valid: false, error: mismatch(`${path}.sourceUrl`, "string") };
-    tweet.sourceUrl = value.sourceUrl;
+    item.context = context.value;
   }
 
-  return { valid: true, value: tweet };
+  return { valid: true, value: item };
 }
 
 /**
  * Validate the `TweetsResponse` envelope:
- * `{ posts: Tweet[]; source: "live" | "cache" | "fallback" }`. Every post must
- * itself be a valid `Tweet`; a missing, renamed, or wrong-typed field (or an
- * out-of-union `source`) yields a type-mismatch error.
+ * `{ posts: News_Item[]; source: "live" | "cache" | "fallback" }`. Every post
+ * must itself be a valid `News_Item`; a missing, renamed, or wrong-typed field
+ * (or an out-of-union `source`) yields a type-mismatch error.
  */
 export function validateTweetsResponse(
   value: unknown,
@@ -290,10 +293,10 @@ export function validateTweetsResponse(
   if (!isRecord(value)) return { valid: false, error: mismatch(path, "object") };
 
   if (!Array.isArray(value.posts))
-    return { valid: false, error: mismatch(`${path}.posts`, "Tweet[]") };
-  const posts: Tweet[] = [];
+    return { valid: false, error: mismatch(`${path}.posts`, "News_Item[]") };
+  const posts: News_Item[] = [];
   for (let i = 0; i < value.posts.length; i++) {
-    const post = validateTweet(value.posts[i], `${path}.posts[${i}]`);
+    const post = validateNewsItem(value.posts[i], `${path}.posts[${i}]`);
     if (!post.valid) return post;
     posts.push(post.value);
   }
@@ -312,23 +315,23 @@ export function validateTweetsResponse(
 }
 
 /**
- * Validate an array of `Tweet` payloads (the current `GET /api/tweets`
- * response shape). Returns the first type-mismatch encountered so the UI can
- * surface it and avoid rendering the payload as valid.
+ * Validate an array of `News_Item` payloads. Returns the first type-mismatch
+ * encountered so the UI can surface it and avoid rendering the payload as
+ * valid.
  */
-export function validateTweetList(
+export function validateNewsItemList(
   value: unknown,
-  path = "tweets"
-): ShapeResult<Tweet[]> {
+  path = "newsItems"
+): ShapeResult<News_Item[]> {
   if (!Array.isArray(value))
-    return { valid: false, error: mismatch(path, "Tweet[]") };
-  const tweets: Tweet[] = [];
+    return { valid: false, error: mismatch(path, "News_Item[]") };
+  const items: News_Item[] = [];
   for (let i = 0; i < value.length; i++) {
-    const tweet = validateTweet(value[i], `${path}[${i}]`);
-    if (!tweet.valid) return tweet;
-    tweets.push(tweet.value);
+    const item = validateNewsItem(value[i], `${path}[${i}]`);
+    if (!item.valid) return item;
+    items.push(item.value);
   }
-  return { valid: true, value: tweets };
+  return { valid: true, value: items };
 }
 
 /**

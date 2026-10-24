@@ -13,7 +13,7 @@ import TweetCard from "../../features/tweets/TweetCard";
 import { SettingsProvider } from "../../context/SettingsContext";
 import { FollowProvider } from "../../context/FollowContext";
 import { CausesProvider } from "../../context/CausesContext";
-import type { Tweet } from "../../types/domain";
+import type { News_Item } from "../../types/domain";
 
 /**
  * Icons-replace-emoji cross-cutting tests (Task 10.1).
@@ -76,18 +76,15 @@ function withProviders(ui: React.ReactNode, initialPath = "/") {
   );
 }
 
-const SAMPLE_TWEET: Tweet = {
+const SAMPLE_TWEET: News_Item = {
   id: "t1",
-  candidateId: "c1",
-  authorName: "Jane Candidate",
-  authorHandle: "@janecandidate",
-  text: "Investing in public transit for every Massachusetts community.",
+  candidateIds: ["c1"],
+  title: "Investing in public transit for every Massachusetts community",
+  outlet: "Commonwealth Beacon",
+  url: "https://example.com/post/t1",
   date: "2025-01-15T12:00:00.000Z",
-  likes: 1234,
-  reposts: 56,
   tabs: ["recent"],
   context: { simple: "Context in plain terms.", expert: "Context in detail." },
-  sourceUrl: "https://example.com/post/t1",
 };
 
 beforeEach(() => {
@@ -146,12 +143,13 @@ describe("icons replace emoji across surfaces (Req 4.1–4.6)", () => {
     assertNoRetiredEmoji(container.textContent ?? "");
   });
 
-  it("renders <svg> markers in a TweetCard (with context) and no retired emoji", () => {
+  it("renders an <svg> marker in a TweetCard (with context) and no retired emoji", () => {
     const { container } = withProviders(
       <TweetCard tweet={SAMPLE_TWEET} showContext />
     );
-    // like, repost, and the added-context info marker are all vector icons.
-    expect(container.querySelectorAll("svg").length).toBeGreaterThanOrEqual(3);
+    // The added-context info marker is a vector icon (no like/repost markers
+    // remain on the News card).
+    expect(container.querySelectorAll("svg").length).toBeGreaterThanOrEqual(1);
     assertNoRetiredEmoji(container.textContent ?? "");
   });
 });

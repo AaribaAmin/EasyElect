@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import fc from "fast-check";
 import {
   validateCandidate,
-  validateTweet,
+  validateNewsItem,
   validateTweetsResponse,
   type ShapeResult,
 } from "./shape";
@@ -10,7 +10,7 @@ import {
 /**
  * Property 23: Client rejects shape-mismatched payloads.
  *
- * For any payload for a requested shape (Candidate, Tweet, TweetsResponse)
+ * For any payload for a requested shape (Candidate, News_Item, TweetsResponse)
  * that is missing a required field, renames a required field, or supplies a
  * wrong-typed value, the shape validator classifies it invalid — returning
  * `{ valid: false }` with a type-mismatch error — rather than accepting it as
@@ -21,7 +21,7 @@ import {
  * key, rename a required key, or retype a required field) and asserts the
  * validator rejects the result.
  *
- * **Validates: Requirements 9.4**
+ * **Validates: Requirements 2.3, 2.4**
  */
 
 const PARTIES = [
@@ -68,22 +68,27 @@ const candidateArb = fc.record({
   source: sourceArb,
 });
 
-/** A valid `Tweet` payload (optional fields omitted). */
-const tweetArb = fc.record({
-  id: fc.string(),
-  candidateId: fc.string(),
-  authorName: fc.string(),
-  authorHandle: fc.string(),
-  text: fc.string(),
-  date: fc.string(),
-  likes: fc.integer(),
-  reposts: fc.integer(),
-  tabs: fc.array(fc.constantFrom(...TWEET_TABS), { maxLength: 4 }),
+/** A non-empty string (the News_Item required string fields reject ""). */
+const nonEmptyStringArb = fc.string({ minLength: 1 });
+
+/**
+ * A valid `News_Item` payload (optional `context` omitted). Every required
+ * string field is non-empty, `candidateIds` is a non-empty array of non-empty
+ * strings, and `tabs` is a non-empty array drawn from the `TweetTab` union.
+ */
+const newsItemArb = fc.record({
+  id: nonEmptyStringArb,
+  candidateIds: fc.array(nonEmptyStringArb, { minLength: 1, maxLength: 3 }),
+  title: nonEmptyStringArb,
+  outlet: nonEmptyStringArb,
+  url: nonEmptyStringArb,
+  date: nonEmptyStringArb,
+  tabs: fc.array(fc.constantFrom(...TWEET_TABS), { minLength: 1, maxLength: 4 }),
 });
 
 /** A valid `TweetsResponse` envelope. */
 const tweetsResponseArb = fc.record({
-  posts: fc.array(tweetArb, { maxLength: 3 }),
+  posts: fc.array(newsItemArb, { maxLength: 3 }),
   source: fc.constantFrom("live", "cache", "fallback"),
 });
 
@@ -104,17 +109,7 @@ const REQUIRED_KEYS = {
     "stances",
     "source",
   ],
-  tweet: [
-    "id",
-    "candidateId",
-    "authorName",
-    "authorHandle",
-    "text",
-    "date",
-    "likes",
-    "reposts",
-    "tabs",
-  ],
+  newsItem: ["id", "candidateIds", "title", "outlet", "url", "date", "tabs"],
   tweetsResponse: ["posts", "source"],
 } as const;
 
@@ -178,6 +173,19 @@ function expectRejected<T>(result: ShapeResult<T>): void {
   }
 }
 
+/** A concrete, known-valid News_Item used by the targeted unit tests. */
+function validNewsItem(): Record<string, unknown> {
+  return {
+    id: "news-1",
+    candidateIds: ["healey", "minogue"],
+    title: "Governor signs budget",
+    outlet: "Boston Globe",
+    url: "https://example.com/article",
+    date: "2024-07-01",
+    tabs: ["recent", "interactions"],
+  };
+}
+
 describe("shape validators — Property 23 (reject shape-mismatched payloads)", () => {
   it("validates well-formed Candidate payloads (sanity baseline)", () => {
     fc.assert(
@@ -202,23 +210,23 @@ describe("shape validators — Property 23 (reject shape-mismatched payloads)", 
     );
   });
 
-  it("validates well-formed Tweet payloads (sanity baseline)", () => {
+  it("validates well-formed News_Item payloads (sanity baseline)", () => {
     fc.assert(
-      fc.property(tweetArb, (tweet) => {
-        expect(validateTweet(tweet).valid).toBe(true);
+      fc.property(newsItemArb, (item) => {
+        expect(validateNewsItem(item).valid).toBe(true);
       }),
       { numRuns: 100 }
     );
   });
 
-  it("rejects any Tweet missing, renamed, or retyped required field", () => {
+  it("rejects any News_Item missing, renamed, or retyped required field", () => {
     fc.assert(
       fc.property(
-        tweetArb,
-        mutationArb(REQUIRED_KEYS.tweet),
-        (tweet, mutation) => {
-          const mutated = applyMutation(tweet, mutation);
-          expectRejected(validateTweet(mutated));
+        newsItemArb,
+        mutationArb(REQUIRED_KEYS.newsItem),
+        (item, mutation) => {
+          const mutated = applyMutation(item, mutation);
+          expectRejected(validateNewsItem(mutated));
         }
       ),
       { numRuns: 300 }
@@ -246,5 +254,173 @@ describe("shape validators — Property 23 (reject shape-mismatched payloads)", 
       ),
       { numRuns: 300 }
     );
+  });
+});
+
+describe("validateNewsItem — targeted rejection cases", () => {
+  it("accepts a valid News_Item (optional context omitted)", () => {
+    const result = validateNewsItem(validNewsItem());
+    expect(result.valid).toBe(true);
+    if (result.valid) {
+      expect(result.value.id).toBe("news-1");
+      expect(result.value.candidateIds).toEqual(["healey", "minogue"]);
+      expect(result.value.tabs).toEqual(["recent", "interactions"]);
+    }
+  });
+
+  it("accepts a valid News_Item with a well-formed optional context", () => {
+    const item = {
+      ...validNewsItem(),
+      context: { simple: "plain take", expert: "detailed take" },
+    };
+    const result = validateNewsItem(item);
+    expect(result.valid).toBe(true);
+    if (result.valid) expect(result.value.context).toEqual({
+      simple: "plain take",
+      expert: "detailed take",
+    });
+  });
+
+  it("rejects a non-object payload", () => {
+    expectRejected(validateNewsItem(null));
+    expectRejected(validateNewsItem("not-an-object"));
+    expectRejected(validateNewsItem([]));
+  });
+
+  for (const key of ["id", "title", "outlet", "url", "date"] as const) {
+    it(`rejects when required string field "${key}" is missing`, () => {
+      const item = validNewsItem();
+      delete item[key];
+      expectRejected(validateNewsItem(item));
+    });
+
+    it(`rejects when required string field "${key}" is renamed`, () => {
+      const item = validNewsItem();
+      item[`${key}X`] = item[key];
+      delete item[key];
+      expectRejected(validateNewsItem(item));
+    });
+
+    it(`rejects when required string field "${key}" is an empty string`, () => {
+      const item = { ...validNewsItem(), [key]: "" };
+      expectRejected(validateNewsItem(item));
+    });
+
+    it(`rejects when required string field "${key}" is wrong-typed`, () => {
+      const item = { ...validNewsItem(), [key]: 123 };
+      expectRejected(validateNewsItem(item));
+    });
+  }
+
+  it("rejects when candidateIds is missing", () => {
+    const item = validNewsItem();
+    delete item.candidateIds;
+    expectRejected(validateNewsItem(item));
+  });
+
+  it("rejects when candidateIds is empty", () => {
+    expectRejected(validateNewsItem({ ...validNewsItem(), candidateIds: [] }));
+  });
+
+  it("rejects when candidateIds is not an array", () => {
+    expectRejected(
+      validateNewsItem({ ...validNewsItem(), candidateIds: "healey" })
+    );
+  });
+
+  it("rejects when candidateIds contains a non-string", () => {
+    expectRejected(
+      validateNewsItem({ ...validNewsItem(), candidateIds: ["healey", 7] })
+    );
+  });
+
+  it("rejects when candidateIds contains an empty string", () => {
+    expectRejected(
+      validateNewsItem({ ...validNewsItem(), candidateIds: ["healey", ""] })
+    );
+  });
+
+  it("rejects when tabs is missing", () => {
+    const item = validNewsItem();
+    delete item.tabs;
+    expectRejected(validateNewsItem(item));
+  });
+
+  it("rejects when tabs is empty", () => {
+    expectRejected(validateNewsItem({ ...validNewsItem(), tabs: [] }));
+  });
+
+  it("rejects when tabs is not an array", () => {
+    expectRejected(validateNewsItem({ ...validNewsItem(), tabs: "recent" }));
+  });
+
+  it("rejects when tabs contains a value outside the TweetTab union", () => {
+    expectRejected(
+      validateNewsItem({ ...validNewsItem(), tabs: ["recent", "trending"] })
+    );
+  });
+
+  it("rejects when optional context is present but malformed", () => {
+    // Missing `expert`.
+    expectRejected(
+      validateNewsItem({ ...validNewsItem(), context: { simple: "s" } })
+    );
+    // Wrong-typed `simple`.
+    expectRejected(
+      validateNewsItem({
+        ...validNewsItem(),
+        context: { simple: 1, expert: "e" },
+      })
+    );
+    // Not an object.
+    expectRejected(
+      validateNewsItem({ ...validNewsItem(), context: "context" })
+    );
+  });
+});
+
+describe("validateTweetsResponse — targeted rejection cases", () => {
+  it("accepts a valid envelope", () => {
+    const result = validateTweetsResponse({
+      posts: [validNewsItem()],
+      source: "fallback",
+    });
+    expect(result.valid).toBe(true);
+    if (result.valid) {
+      expect(result.value.source).toBe("fallback");
+      expect(result.value.posts).toHaveLength(1);
+    }
+  });
+
+  it("accepts an empty posts array", () => {
+    const result = validateTweetsResponse({ posts: [], source: "live" });
+    expect(result.valid).toBe(true);
+  });
+
+  it("rejects when posts is not an array", () => {
+    expectRejected(
+      validateTweetsResponse({ posts: "nope", source: "live" })
+    );
+  });
+
+  it("rejects when posts is missing", () => {
+    expectRejected(validateTweetsResponse({ source: "live" }));
+  });
+
+  it("rejects when a post is invalid", () => {
+    const badPost = { ...validNewsItem(), title: "" };
+    expectRejected(
+      validateTweetsResponse({ posts: [validNewsItem(), badPost], source: "live" })
+    );
+  });
+
+  it("rejects when source is out of the PostsSource union", () => {
+    expectRejected(
+      validateTweetsResponse({ posts: [], source: "archive" })
+    );
+  });
+
+  it("rejects when source is missing", () => {
+    expectRejected(validateTweetsResponse({ posts: [] }));
   });
 });

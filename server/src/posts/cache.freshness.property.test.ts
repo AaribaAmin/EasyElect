@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import fc from "fast-check";
 import { setCache, isFresh } from "./cache.js";
-import type { Tweet } from "../domain/types.js";
+import type { News_Item } from "../domain/types.js";
 
 /**
  * Property 10 (unit-level portion): Fresh cache is served without an external call.
@@ -17,25 +17,23 @@ import type { Tweet } from "../domain/types.js";
  * Validates: Requirements 6.2, 10.3
  */
 
-/** A single `Tweet`, kept minimal but inside the declared shape. */
-const tweetArb: fc.Arbitrary<Tweet> = fc.record({
+/** A single `News_Item`, kept minimal but inside the declared shape. */
+const newsItemArb: fc.Arbitrary<News_Item> = fc.record({
   id: fc.string(),
-  candidateId: fc.string(),
-  authorName: fc.string(),
-  authorHandle: fc.string(),
-  text: fc.string(),
+  candidateIds: fc.array(fc.string(), { minLength: 1, maxLength: 3 }),
+  title: fc.string(),
+  outlet: fc.string(),
+  url: fc.webUrl(),
   date: fc
     .integer({ min: 946_684_800_000, max: 4_102_444_800_000 })
     .map((ms) => new Date(ms).toISOString()),
-  likes: fc.nat(),
-  reposts: fc.nat(),
   tabs: fc.array(
     fc.constantFrom("recent", "notable", "needsContext", "interactions"),
-  ) as fc.Arbitrary<Tweet["tabs"]>,
+  ) as fc.Arbitrary<News_Item["tabs"]>,
 });
 
 /** A guaranteed non-empty list of posts so the cache is populated. */
-const nonEmptyPostsArb = fc.array(tweetArb, { minLength: 1, maxLength: 10 });
+const nonEmptyPostsArb = fc.array(newsItemArb, { minLength: 1, maxLength: 10 });
 
 /** Retrieval timestamp (UTC epoch ms), bounded so now + offset stays in range. */
 const fetchedAtArb = fc.integer({ min: 0, max: 8_000_000_000_000 });

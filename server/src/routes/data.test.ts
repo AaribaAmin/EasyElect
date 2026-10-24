@@ -75,20 +75,27 @@ describe("data endpoints", () => {
     for (const i of res.body) expectExplain(i.explainer);
   });
 
-  it("serves tweets attributed to real candidates", async () => {
+  it("serves news items attributed to real candidates", async () => {
     const res = await request(app).get("/api/tweets");
     expect(res.status).toBe(200);
-    // The endpoint now returns a TweetsResponse envelope { posts, source }.
+    // The endpoint returns a TweetsResponse envelope { posts, source } whose
+    // posts are curated News_Items keyed to one or more candidateIds.
     expect(["live", "cache", "fallback"]).toContain(res.body.source);
     expect(Array.isArray(res.body.posts)).toBe(true);
     for (const t of res.body.posts) {
-      expect(candidatesById.has(t.candidateId)).toBe(true);
+      // candidateIds is a non-empty, duplicate-free array whose every id
+      // resolves to a real candidate (Verified_Source discipline).
+      expect(Array.isArray(t.candidateIds)).toBe(true);
+      expect(t.candidateIds.length).toBeGreaterThan(0);
+      expect(new Set(t.candidateIds).size).toBe(t.candidateIds.length);
+      for (const id of t.candidateIds) {
+        expect(candidatesById.has(id)).toBe(true);
+      }
       expect(Array.isArray(t.tabs)).toBe(true);
       if (t.context) expectExplain(t.context);
     }
     // When posts are present, at least one must carry context for the Needs
-    // Context tab. The genuine-only fallback dataset is empty when no verified
-    // x.com posts exist, in which case there is nothing to assert.
+    // Context tab.
     if (res.body.posts.length > 0) {
       expect(
         res.body.posts.some((t: { context?: unknown }) => t.context)

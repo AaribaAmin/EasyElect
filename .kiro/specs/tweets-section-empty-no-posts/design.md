@@ -1,233 +1,205 @@
-# Tweets Section Empty — No Posts Bugfix Design
+# News Section Design Document
 
 ## Overview
 
-The Tweets section renders no posts in any of its four tabs because the fallback posts dataset is empty. On the server, `resolveTweets()` in `server/src/routes/data.ts` walks a cache → live → fallback decision tree. When live posting is not configured (no `LIVE_POSTS_BEARER_TOKEN`), `isLivePostsEnabled()` returns `false` and the route immediately serves `fallbackResponse() = { posts: tweets, source: "fallback" }`. The fallback dataset `tweets` in `server/src/domain/tweets.ts` is `[]`, so every request under the common (no-credentials) configuration resolves to zero posts, and `TweetsPage` shows "No posts in this tab yet." on all four tabs.
+The Tweets section renders no content because the fallback posts dataset (`tweets` in `server/src/domain/tweets.ts`) is empty and cannot be populated: the section was built around genuine, verified x.com posts, and x.com gates post text, status IDs, and engagement counts behind authentication and a paid API. There are no verifiable x.com records to add, so every request that resolves to the fallback branch of `resolveTweets()` serves `{ posts: [], source: "fallback" }` and `TweetsPage` shows "No posts in this tab yet." on all four tabs.
 
-The fix is narrow and additive: populate `tweets` with genuine, verified x.com posts that satisfy the existing genuine-only guarantee. Each record must be a real, publicly published x.com post whose `sourceUrl` resolves to that post on the `x.com` host, carry the real engagement counts reported by the source, carry an `authorHandle` that matches a known candidate via normalized handle, and carry a `candidateId` matching a real candidate in `candidates.ts`. The fix removes the emptiness by *supplying verified records*, not by relaxing verification — the genuine-only guarantee and its property tests stay in force. All other Tweets behavior (the live-fetch pipeline, `filterByTab` tab membership, followed-candidate ordering, the origin indicator, the "Added context" blocks) and every non-Tweets section are untouched.
+This design repurposes the section as a curated candidate News feed while making the smallest change that works. The server response envelope `{ posts, source }`, the cache -> live -> fallback decision tree in `resolveTweets()`, the `fallbackResponse()` shape, and the origin indicator (`PostsStatus`) are all preserved exactly. The two things that change are:
+
+1. The item data model: a `News_Item` (headline, outlet, url, date, one or more candidate ids, tab membership, optional neutral context) replaces the x.com-`Tweet` shape for this section.
+2. The data served on the fallback branch: `server/src/domain/tweets.ts` is populated with a curated, verified static `News_Dataset` instead of an empty array.
+
+Verification reuses the discipline already applied to candidate `stances` in `candidates.ts`: every item links to a resolvable HTTP/HTTPS source (`Verified_Source`) and is only included if it can be verified; candidates with no verifiable coverage simply contribute no items. Every non-Tweets section (candidates, issues, causes, connect, election, quiz) is untouched.
 
 ## Glossary
 
-- **Bug_Condition (C)**: The condition that triggers the bug — a request resolves to the fallback branch while the fallback dataset is empty, so the Tweets section serves zero posts and every tab shows the empty state.
-- **Property (P)**: The desired behavior for the bug condition — the fallback branch serves a non-empty dataset of genuine x.com posts, so at least the Recent tab displays one or more posts instead of the empty state.
-- **Preservation**: The behavior that must remain unchanged by the fix — the live-fetch pipeline, `filterByTab` tab membership, `orderByFollowed` followed-first ordering, the origin indicator (Live / Cached / Fallback), the "Added context" blocks, the genuine-only guarantee and its property tests, and every non-Tweets section.
-- **Fallback_Posts_Dataset**: The `tweets: Tweet[]` array exported from `server/src/domain/tweets.ts`, served verbatim by `fallbackResponse()` when the route resolves to the fallback branch.
-- **`resolveTweets()`**: The function in `server/src/routes/data.ts` that resolves the `TweetsResponse` envelope via the cache → live → fallback decision tree. It serves `fallbackResponse()` when live posting is disabled, or when a live fetch fails with an empty cache.
-- **`isLivePostsEnabled()`**: The predicate in `server/src/posts/provider.ts` that reports whether `LIVE_POSTS_BEARER_TOKEN` is present and non-empty. When it returns `false`, `resolveTweets()` takes the fallback branch with no network call.
-- **`normalizeHandle()`**: The function in `server/src/posts/provider.ts` that lowercases a handle and strips at most one leading `@`, used to match an `authorHandle` to a candidate's `handle`.
-- **`filterByTab()`**: The pure function in `client/src/lib/tweetFilter.ts` that returns the posts whose `tabs` array contains a given tab, preserving input order.
-- **`orderByFollowed()`**: The in-component helper in `client/src/pages/TweetsPage.tsx` that stably floats posts from followed candidates to the front of the list.
-- **Genuine-only guarantee**: The invariant (from the prior `tweets-section-genuine-x-posts` fix) that every fallback record is a real, verifiable x.com post — non-empty fields, `sourceUrl` host of `x.com`, real (finite, non-negative integer) engagement counts, dataset size 0..50 — enforced by `server/src/domain/tweets.property.test.ts`.
+- **News_Item**: The curated record replacing `Tweet` for this section. Shape: `{ id: string; candidateIds: string[]; title: string; outlet: string; url: string; date: string; tabs: TweetTab[]; context?: Explain }`.
+- **News_Dataset**: The curated static array served on the fallback branch of `resolveTweets()` -- the `tweets` export in `server/src/domain/tweets.ts`, repurposed to hold `News_Item[]`. The export name is kept (see Fix Implementation) so `data.ts` imports need no change.
+- **Verified_Source**: A `url` that resolves over HTTP/HTTPS to a real, publicly accessible article from a reputable outlet, `.gov` page, or official campaign site. Replaces the prior "`sourceUrl` host must be `x.com`" guarantee.
+- **`resolveTweets()`**: The function in `server/src/routes/data.ts` that resolves the response envelope via the cache -> live -> fallback decision tree. Unchanged by this design.
+- **`fallbackResponse()`**: The helper in `server/src/routes/data.ts` that returns `{ posts: tweets, source: "fallback" }`. Unchanged in shape; now serves `News_Item[]`.
+- **`filterByTab()`**: The pure function in `client/src/lib/tweetFilter.ts` that returns items whose `tabs` array contains a given tab, preserving input order.
+- **`orderByFollowed()`**: The pure helper in `client/src/lib/feedFilter.ts` that stably floats followed items to the front. Adapted to `candidateIds` any-of and extended with most-recent-first date ordering within each group.
+- **`applyFeedFilters()` / `buildPartyIndex()` / `resolveParty()`**: The pure, React-free filter functions in `client/src/lib/feedFilter.ts`. Adapted from a single `candidateId` to any-of over `candidateIds`.
+- **Any-of matching**: A `News_Item` matches a party/follow predicate (or floats in ordering) when ANY of its `candidateIds` satisfies that predicate.
+- **The four tabs**: The `TweetTab` ids `"recent" | "notable" | "needsContext" | "interactions"`, labeled in the client as "Recent News", "Notable News", "Needs Context", and "Interactions".
 
 ## Bug Details
 
-### Bug Condition
+The bug manifests when a `GET /api/tweets` request resolves to the fallback branch of `resolveTweets()` while the `News_Dataset` (`tweets`) is empty. This is the default configuration: with no `LIVE_POSTS_BEARER_TOKEN`, `isLivePostsEnabled()` returns `false`, the route serves `{ posts: [], source: "fallback" }`, and `TweetsPage` applies `filterByTab` to an empty list for every tab -- so each of Recent, Notable, Needs Context, and Interactions shows "No posts in this tab yet." The same empty result is served when a live fetch fails with an empty cache.
 
-The bug manifests when a `GET /api/tweets` request resolves to the fallback branch of `resolveTweets()` while the `Fallback_Posts_Dataset` (`tweets`) is empty. This is the default configuration: with no `LIVE_POSTS_BEARER_TOKEN`, `isLivePostsEnabled()` returns `false`, the route serves `{ posts: [], source: "fallback" }`, and `TweetsPage` applies `filterByTab` to an empty list for every tab — so each of Recent, Notable, Needs Context, and Interactions shows "No posts in this tab yet." The same empty result is served when a live fetch fails (timeout / network / non-success) with an empty cache.
+The control flow is correct; the defect is in the data. Under the original x.com-post design the dataset could not be populated at all, because x.com gates post text, status IDs, and engagement counts behind authentication and a paid API -- there are no verifiable x.com records to add. So the section stays empty.
 
-The function is not misbehaving in its control flow — the fallback branch is correct. The defect is in the *data*: the dataset that the fallback branch is required to serve has no records, so there is nothing to display.
+Examples:
 
-**Formal Specification:**
-```
-FUNCTION isBugCondition(input)
-  INPUT: input of type TweetsRequestContext
-         { livePostsEnabled: boolean,
-           liveFetchOutcome: "ok" | "rateLimited" | "failed" | "n/a",
-           cacheNonEmpty: boolean,
-           fallbackDataset: Tweet[] }
-  OUTPUT: boolean
-
-  // The request resolves to the fallback branch of resolveTweets()
-  resolvesToFallback :=
-       (input.livePostsEnabled = false)
-    OR (input.livePostsEnabled = true
-        AND input.liveFetchOutcome = "failed"
-        AND input.cacheNonEmpty = false)
-
-  RETURN resolvesToFallback
-         AND length(input.fallbackDataset) = 0
-END FUNCTION
-```
-
-### Examples
-
-- **No credentials (default), Recent tab**: `livePostsEnabled = false`, `fallbackDataset = []`. Expected: the Recent tab shows at least one genuine post. Actual (bug): "No posts in this tab yet."
-- **No credentials, every tab**: `livePostsEnabled = false`, `fallbackDataset = []`. Expected: the served posts partition across the four tabs by `tabs` membership so populated tabs show posts. Actual (bug): all four tabs empty.
-- **Live fetch fails, empty cache**: `livePostsEnabled = true`, `liveFetchOutcome = "failed"`, `cacheNonEmpty = false`, `fallbackDataset = []`. Expected: the genuine fallback posts are served so the section is populated. Actual (bug): zero posts served, section empty.
-- **Edge case — populated fallback (post-fix)**: `livePostsEnabled = false`, `fallbackDataset = [genuine x.com posts]`. `isBugCondition` is `false` because the dataset is non-empty; the section displays the genuine posts. This is the target state.
-
-## Expected Behavior
-
-### Preservation Requirements
-
-**Unchanged Behaviors:**
-- The live-fetch pipeline in `server/src/posts/provider.ts` (`isLivePostsEnabled`, `fetchLivePosts`, `mapRawPost`/`mapRawPosts`, public-only / full-attribution / handle-match filtering) must behave exactly as before; a live-returned genuine post still displays with its real `likes`/`reposts`.
-- The cache → live → fallback decision tree in `resolveTweets()` is unchanged; only the data served on the fallback branch changes.
-- The four tabs and tab-membership filtering via `filterByTab` behave exactly as before.
-- `orderByFollowed` stably floats followed candidates to the front, unchanged.
-- The "Added context" blocks render for posts that carry a `context` block on the Needs Context tab, unchanged.
-- The origin indicator (Live / Cached / Fallback) renders for the served source, unchanged.
-- The genuine-only guarantee and its property tests continue to hold: the dataset holds 0..50 records, every record's `sourceUrl` resolves to the `x.com` host, and no record carries placeholder or fabricated engagement counts.
-- Every non-Tweets section (candidates, issues, causes, connect, election, quiz) behaves exactly as before.
-
-**Scope:**
-All inputs where `isBugCondition` is `false` must be completely unaffected by this fix. This includes:
-- Requests that resolve to the live branch (`source: "live"`) or the cache branch (`source: "cache"`).
-- Requests that resolve to the fallback branch when the dataset is already non-empty (the post-fix steady state) — these display the genuine posts the fix supplies.
-- All client-side rendering logic: tab filtering, followed-first ordering, context blocks, origin indicator.
-- All non-Tweets API routes and UI sections.
-
-**Note:** The actual expected correct behavior for the bug condition is defined in the Correctness Properties section (Property 1). This section records what must NOT change.
+- **No credentials (default), Recent tab**: `livePostsEnabled = false`, dataset `[]`. Expected: Recent News shows at least one verified item. Actual (bug): "No posts in this tab yet."
+- **No credentials, every tab**: `livePostsEnabled = false`, dataset `[]`. Expected: items partition across the four tabs by `tabs` membership. Actual (bug): all four tabs empty.
+- **Live fetch fails, empty cache**: `livePostsEnabled = true`, outcome `failed`, cache empty, dataset `[]`. Expected: the curated dataset is served. Actual (bug): zero items.
+- **Target state (post-fix)**: `livePostsEnabled = false`, dataset `[verified News_Items]`. The section displays the curated news.
 
 ## Hypothesized Root Cause
 
-Based on the bug analysis, the cause is a single, well-understood data gap rather than a logic error:
+The root cause is a data model that cannot be populated, not a logic error. The section was modeled around genuine, verified x.com posts (`Tweet`: `authorHandle`, `likes`, `reposts`, single `candidateId`, `sourceUrl` on host `x.com`). That verification standard cannot be met: x.com requires authentication and a paid API to retrieve and verify post data, so the fallback dataset `tweets` was left as `export const tweets: Tweet[] = []`. The empty array is served verbatim by `fallbackResponse()`, which is why every fallback request yields zero posts.
 
-1. **Empty fallback dataset (confirmed root cause)**: `server/src/domain/tweets.ts` exports `export const tweets: Tweet[] = []`. The accompanying doc comment states the array is intentionally empty because no verified x.com records existed when the genuine-only fix (`tweets-section-genuine-x-posts`) landed. The fallback branch of `resolveTweets()` serves this array verbatim via `fallbackResponse()`, so with live posting disabled the section always serves zero posts.
+The fix therefore changes the model (a `News_Item` keyed to one or more `candidateIds`, verified by a resolvable HTTP/HTTPS `url` -- the same `Verified_Source` discipline used for candidate `stances`) and populates the fallback dataset with verifiable records, while leaving `resolveTweets()` and the envelope untouched.
 
-2. **Default no-credentials configuration exercises the fallback branch**: `isLivePostsEnabled()` returns `false` when `LIVE_POSTS_BEARER_TOKEN` is absent, which is the common local/default configuration. This routes essentially every request to the empty fallback.
+## Architecture
 
-3. **Not a control-flow defect**: The decision tree, `filterByTab`, `orderByFollowed`, and the origin indicator are all correct. They faithfully render an empty dataset as an empty section. No change to any of them is required or desirable.
+The request/response architecture is unchanged. `GET /api/tweets` calls `resolveTweets()`, which walks the same decision tree:
 
-4. **Not a verification-strictness defect**: The genuine-only guarantee is correct and must stay. The gap is simply that no genuine records had been added yet. The fix closes the gap by adding verified records, not by weakening verification.
+```mermaid
+flowchart TD
+    A[GET /api/tweets] --> B{isLivePostsEnabled?}
+    B -- no --> F[fallbackResponse: News_Dataset, source=fallback]
+    B -- yes --> C{cache non-empty and fresh?}
+    C -- yes --> D[cacheResponse: source=cache]
+    C -- no --> E[fetchLivePosts]
+    E -- ok --> G[setCache; source=live]
+    E -- rateLimited and cache --> D
+    E -- rateLimited and empty cache --> H[503 error]
+    E -- failed and cache --> D
+    E -- failed and empty cache --> F
+```
+
+The only change in this graph is the payload type flowing through it: `posts` is now `News_Item[]` rather than x.com `Tweet[]`. The real data path for this feature is the fallback branch (`News_Dataset`); the live/cache branches remain wired but, under the minimal approach, serve nothing useful for news (see the tradeoff note under Data Models).
+
+The client path is likewise preserved: `TweetsPage` fetches `/api/tweets`, validates the envelope with `shape.ts`, applies `applyFeedFilters` + `orderByFollowed`, renders through `PostsStatus` (origin indicator) and `TweetCard`.
+
+## Components and Interfaces
+
+- **`server/src/routes/data.ts`** (`resolveTweets`, `fallbackResponse`, `cacheResponse`): unchanged control flow and envelope. Serves `News_Dataset` on the fallback branch.
+- **`server/src/domain/types.ts`**: defines the item type served by the envelope (see Data Models). `TweetsResponse` keeps `{ posts, source }` with `posts` typed as the News item.
+- **`server/src/domain/tweets.ts`**: exports `tweets` (kept name), now the curated `News_Dataset`.
+- **`client/src/types/domain.ts`**: compile-time mirror of the server item type; must stay in sync.
+- **`client/src/lib/tweetFilter.ts`** (`filterByTab`): unchanged in contract -- still "item in tab T iff T in item.tabs".
+- **`client/src/lib/feedFilter.ts`** (`resolveParty`, `applyFeedFilters`, `orderByFollowed`, `buildPartyIndex`, `partyOptions`): adapted to any-of over `candidateIds` and date ordering (see Filter/Ordering Adaptation).
+- **`client/src/lib/shape.ts`**: runtime validators adapted to the News item shape.
+- **`client/src/pages/TweetsPage.tsx`**: tab labels become "Recent News" / "Notable News" / "Needs Context" / "Interactions"; wiring to filters/ordering preserved.
+- **`client/src/features/tweets/TweetCard.tsx`**: renders `title`, `outlet`, `date`, `url`, and `context` instead of `authorHandle` / `likes` / `reposts` / `text`.
+- **`client/src/components/PostsStatus.tsx`**: unchanged origin indicator (Live / Cached / Fallback) and usage/attribution notice.
+
+## Data Models
+
+The `Tweet` shape is replaced for this section by a News item. The `TweetTab` union ids are kept so filtering code needs no re-keying; only the client labels change.
+
+```typescript
+// server/src/domain/types.ts  (mirrored in client/src/types/domain.ts)
+
+export type TweetTab = "recent" | "notable" | "needsContext" | "interactions";
+
+/** A curated, verified news item relevant to one or more candidates. */
+export interface News_Item {
+  id: string;
+  /** One or more candidate ids (no duplicates), each matching a Candidate.id. */
+  candidateIds: string[];
+  /** The article headline. */
+  title: string;
+  /** The publisher / source name, e.g. "Boston Globe". */
+  outlet: string;
+  /** Resolvable HTTP/HTTPS link to the article (Verified_Source). */
+  url: string;
+  /** Publication date, ISO 8601. */
+  date: string;
+  /** Which tabs this item appears in (one or more). */
+  tabs: TweetTab[];
+  /** Optional neutral clarification shown on the Needs Context tab. */
+  context?: Explain;
+}
+
+/** Envelope returned by GET /tweets: unchanged shape, News items inside. */
+export interface TweetsResponse {
+  posts: News_Item[];
+  source: PostsSource;
+}
+```
+
+Notes:
+
+- **Dropped fields**: `authorName`, `authorHandle`, `text`, `likes`, `reposts`, `inReplyTo`, `sourceUrl`, and the single `candidateId` are removed from the item served in this section.
+- **Label vs id**: tab ids stay `"recent" | "notable" | "needsContext" | "interactions"`; the UI labels become "Recent News" / "Notable News" / "Needs Context" / "Interactions".
+- **Envelope preserved**: `TweetsResponse` remains `{ posts, source }` with `source: PostsSource` (`"live" | "cache" | "fallback"`).
+- **Server/client sync**: `server/src/domain/types.ts` and `client/src/types/domain.ts` must declare the same item shape.
+- **Tradeoff (live pipeline dead-but-present)**: the x.com live-fetch provider pipeline (`server/src/posts/provider.ts`, `server/src/posts/cache.ts`) is retained as-is under the minimal approach. With no credentials it is disabled (the common case), and even when enabled it fetches x.com posts, which do not map to the News item shape -- so the live/cache branches effectively serve nothing useful for the news feed. The fallback branch is the real data path. We accept this dead-but-present code to keep the change surgical and avoid touching `resolveTweets()`; a later cleanup could retire or repurpose the provider.
+
+## Filter/Ordering Adaptation
+
+All three adaptations move from a single `post.candidateId` to any-of over `item.candidateIds`. The functions stay pure and React-free and mutate none of their inputs.
+
+- **`resolveParty(item, partyIndex)`**: returns a `Party` when ANY id in `item.candidateIds` resolves through `partyIndex`; otherwise `undefined` (Unresolved). Precise predicate: `item.candidateIds.some(id => partyIndex.has(id))`, returning the party of the first resolving id. For the party filter, an item passes a specific party `P` iff `item.candidateIds.some(id => partyIndex.get(id) === P)`.
+- **`applyFeedFilters` following-only**: an item passes iff `!followingOnly || item.candidateIds.some(id => followedSet.has(id))`. An empty `followedSet` with `followingOnly` on yields `[]` (empty feed, not an error).
+- **`orderByFollowed(list, followedSet)`**: stable partition where an item is "followed" iff `item.candidateIds.some(id => followedSet.has(id))`. Within each of the two groups (followed, rest), items are ordered most-recent-first by `date` (descending ISO 8601 comparison). The function returns a freshly allocated array and does not mutate `list`.
+
+`filterByTab` is unchanged in semantics: `item in tab T iff T in item.tabs`.
+
+## Expected Behavior
+
+After the fix, a request that resolves to the fallback branch (the default, no-credentials case, and the failed-fetch-with-empty-cache case) serves a non-empty curated `News_Dataset`, so at least the Recent News tab is populated instead of showing the empty state (Req 2.1, 2.2). Every served item is a `Verified_Source`: non-empty `title`/`outlet`/`url`/`date`, `date` a valid ISO 8601 string, `url` resolvable over HTTP/HTTPS, and `candidateIds` non-empty, duplicate-free, with every id matching a real candidate in `candidates.ts` (Req 2.3, 2.4). Candidates with no verifiable coverage contribute nothing -- no placeholder, no fabrication (Req 2.5).
+
+The four tabs keep tab-membership semantics (`item in tab T iff T in item.tabs`); Interactions shows items with `candidateIds.length >= 2`, and Needs Context renders each item's neutral `context` (Req 2.6). The party filter, the follow filter, and followed-first ordering use any-of over `candidateIds`, with an empty follow set yielding an empty feed and items ordered most-recent-first within each group (Req 2.7, 2.8). The `{ posts, source }` envelope, the decision tree, the origin indicator, and all non-Tweets sections are unchanged (Req 3.1-3.6).
 
 ## Correctness Properties
 
-Property 1: Bug Condition - Populated genuine fallback displays posts
+*A property is a characteristic or behavior that should hold true across all valid executions of a system -- essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees.*
 
-_For any_ input where the bug condition holds (isBugCondition returns true — a request resolves to the fallback branch while the dataset is empty), the fixed system SHALL serve a non-empty `Fallback_Posts_Dataset` of genuine x.com posts such that at least the Recent tab displays one or more posts instead of the empty state, and every served record satisfies the genuine-only guarantee: non-empty `text`/`authorName`/`authorHandle`/`sourceUrl`, a `sourceUrl` whose host is `x.com`, real (finite, non-negative integer) `likes`/`reposts`, an `authorHandle` that matches a known candidate via `normalizeHandle`, and a `candidateId` that matches a real candidate in `candidates.ts`.
+### Property 1: Bug Condition -> fixed (non-empty, verified fallback)
 
-**Validates: Requirements 2.1, 2.2, 2.3, 2.4**
+*For all* requests that resolve to the fallback branch with live posting disabled, the served envelope has `source === "fallback"` and `posts.length >= 1`, at least one served item has `"recent"` in its `tabs` (so the Recent News tab is populated), and *for all* served items the item is a Verified_Source: `title`, `outlet`, `url`, and `date` are non-empty, `date` is a valid ISO 8601 string, `url` parses as an `http`/`https` URL, and `candidateIds` is non-empty, has no duplicates, and every id matches a real candidate in `candidates.ts`.
 
-Property 2: Preservation - Non-fallback and non-Tweets behavior unchanged
+**Validates: Requirements 2.1, 2.2, 2.3, 2.4, 2.5**
 
-_For any_ input where the bug condition does NOT hold (isBugCondition returns false — the request resolves to the live or cache branch, or the fallback dataset is already non-empty, or the input exercises a non-Tweets section), the fixed system SHALL produce the same result as the original system, preserving the live-fetch pipeline, the cache → live → fallback decision tree, `filterByTab` tab membership, `orderByFollowed` followed-first ordering, the "Added context" blocks, the origin indicator (Live / Cached / Fallback), and every non-Tweets section.
+### Property 2: Preservation
 
-**Validates: Requirements 3.1, 3.2, 3.3, 3.5, 3.6**
+*For all* requests, the response is the `{ posts, source }` envelope resolved by the cache -> live -> fallback decision tree; the origin indicator renders the Live / Cached / Fallback label for the served `source`; tab-membership filtering, the party filter, and the follow filter remain available; and every non-Tweets section behaves exactly as before.
 
-Property 3: Preservation - Genuine-only guarantee and dataset bounds unchanged
+**Validates: Requirements 3.1, 3.2, 3.3, 3.4, 3.6**
 
-_For any_ execution, the fixed `Fallback_Posts_Dataset` SHALL continue to satisfy the genuine-only guarantee and its property tests: the dataset holds between 0 and 50 records, every record's `sourceUrl` resolves to the `x.com` host, and no record carries placeholder or fabricated engagement counts.
+### Property 3: Interactions tab consistency
 
-**Validates: Requirements 3.4**
+*For all* datasets, an item is shown on the Interactions tab iff `"interactions"` is a member of its `tabs` AND `candidateIds.length >= 2`. Equivalently, the curated dataset maintains the invariant that `"interactions" in item.tabs` implies `item.candidateIds.length >= 2`, so tab membership and the multi-candidate rule agree.
+
+**Validates: Requirements 2.6**
+
+### Property 4: Any-of filters and ordering
+
+*For all* datasets, follow sets, and party selections, the party filter keeps an item iff ANY of its `candidateIds` resolves to the selected party; the follow filter keeps an item iff ANY of its `candidateIds` is followed (empty follow set yields an empty feed); and `orderByFollowed` floats an item ahead iff ANY of its `candidateIds` is followed, with items within each group ordered most-recent-first by `date`. All three are pure and mutate no input.
+
+**Validates: Requirements 2.7, 2.8, 3.4**
 
 ## Fix Implementation
 
-### Changes Required
+Files to change:
 
-Assuming our root cause analysis is correct:
+- **`server/src/domain/types.ts`**: define the `News_Item` shape and point `TweetsResponse.posts` at it (repurpose the `Tweet` usage for this section). Keep `TweetTab` ids and the `{ posts, source }` envelope.
+- **`server/src/domain/tweets.ts`**: populate the curated, verified `News_Dataset`. Keep the exported name `tweets` (minimal: `data.ts`'s `import { tweets }` stays unchanged) -- we deliberately keep the name rather than rename to avoid touching the import in `data.ts`.
+- **`client/src/types/domain.ts`**: mirror the `News_Item` shape so server and client stay in sync.
+- **`client/src/lib/tweetFilter.ts`**: `filterByTab` keeps its contract (now over `News_Item`); re-type to the News item.
+- **`client/src/lib/feedFilter.ts`**: adapt `resolveParty`, `applyFeedFilters` (following-only), and `orderByFollowed` from single `candidateId` to any-of over `candidateIds`, and add most-recent-first date ordering within each group; keep functions pure/React-free.
+- **`client/src/pages/TweetsPage.tsx`**: relabel the four tabs to "Recent News" / "Notable News" / "Needs Context" / "Interactions" and render News cards.
+- **`client/src/features/tweets/TweetCard.tsx`**: render `title`/`outlet`/`date`/`url`/`context` instead of handle/likes/reposts/text.
+- **`client/src/lib/shape.ts`**: adapt the runtime validators to the `News_Item` shape and envelope.
 
-**File**: `server/src/domain/tweets.ts`
+Explicit non-changes: the `resolveTweets()` decision tree, `fallbackResponse()` shape, the `PostsStatus` origin indicator and attribution notice, and all non-Tweets routes/sections (candidates, issues, causes, connect, election, quiz).
 
-**Export**: `tweets: Tweet[]`
+## Error Handling
 
-**Specific Changes**:
-1. **Populate the dataset with genuine, verified x.com posts**: Replace the empty `[]` literal with an array of real, publicly published x.com posts for the known candidates (`maura-healey` / `@maura_healey`, `mike-minogue` / `@minogueforma`). Each post is a `Tweet` record carrying `id`, `candidateId`, `authorName`, `authorHandle`, `text`, `date` (ISO), `likes`, `reposts`, `tabs`, and `sourceUrl`.
-
-2. **Verify each `sourceUrl` against the live post on `x.com`**: Every `sourceUrl` must resolve to that exact post on the `x.com` host (e.g. `https://x.com/<handle>/status/<id>`), so `new URL(sourceUrl).host === "x.com"`.
-
-3. **Record real engagement counts only**: `likes` and `reposts` must be the actual counts reported by the source at verification time — finite, non-negative integers. No placeholder or fabricated values.
-
-4. **Attribute to a real candidate via normalized handle**: Each record's `authorHandle` must match a candidate's `handle` under `normalizeHandle` (case-insensitive, `@`-insensitive), and its `candidateId` must equal that candidate's `id` in `candidates.ts`.
-
-5. **Assign tab membership so at least Recent is populated**: Each record's `tabs` must be a non-empty subset of `["recent", "notable", "needsContext", "interactions"]`, with at least one record in `recent` so the default tab is non-empty. Records placed in `needsContext` should carry a neutral editorial `context` block (per the genuine-only guarantee, context must not endorse, rank, or recommend any position).
-
-6. **Keep the dataset within bounds and update the doc comment**: Keep the total between 1 and 50 records, and update the module doc comment to reflect that verified records are now present and to reference `DATA_SOURCES.md` for the verification process. Do not relax any verification wording — the genuine-only guarantee remains.
-
-**Non-changes (explicit):** `resolveTweets()`, `fallbackResponse()`, the provider pipeline, `filterByTab`, `orderByFollowed`, `PostsStatus`, and all non-Tweets routes/sections are not modified.
+- **Empty follow set with following-only on**: yields an empty feed, not an error (Req 2.7); `TweetsPage` renders the "you follow no one" empty state.
+- **Unresolved party**: an item whose `candidateIds` resolve to no party is excluded while a specific party is selected (any-of `resolveParty` returns `undefined`).
+- **Invalid payload**: `shape.ts` validators reject a payload whose `posts` do not match the News item shape (missing/renamed/wrong-typed fields, out-of-union `source`, non-array `candidateIds`) with a human-readable type-mismatch error, so the UI surfaces the error instead of rendering bad data.
+- **Live/cache branch with no usable news**: under the dead-but-present live pipeline, a failed fetch with an empty cache falls through to the populated `News_Dataset` (Req 2.2); the rate-limited-with-empty-cache branch continues to return 503 unchanged.
+- **Dataset discipline**: dataset size kept within 0..100; no fabricated headlines, outlets, dates, or URLs -- unverifiable candidates contribute nothing (Req 2.5, 3.5).
 
 ## Testing Strategy
 
-### Validation Approach
+The feed, filters, ordering, and dataset validity are pure/data concerns with meaningful input variation, so property-based tests apply (minimum 100 iterations each, tagged `Feature: news-section, Property {n}`). A property-based testing library already in use in the repo is reused; properties are not implemented from scratch. Example-based unit tests cover concrete rendering and envelope shape.
 
-The testing strategy follows a two-phase approach: first, surface counterexamples that demonstrate the bug on the unfixed code (the empty-fallback section), then verify the fix populates the section with genuine posts while preserving every other behavior and the genuine-only guarantee.
+- **Exploratory bug-condition check**: assert that with live posting disabled the fallback branch serves a non-empty `News_Dataset` and that the Recent News tab is populated (`source === "fallback"`, `posts.length >= 1`, at least one item with `"recent"` in `tabs`). This encodes Property 1 and fails on the unfixed (empty) dataset.
+- **Fix checking**: once the dataset is populated, the same property passes; add a dataset property test asserting Verified_Source for every item -- `url` parses as `http`/`https`, non-empty `title`/`outlet`/`url`/`date` (valid ISO 8601), `candidateIds` non-empty, unique, and all resolving to real candidates, and dataset size within 0..100. This REPLACES the prior x.com-host + finite-non-negative `likes`/`reposts` assertions.
+- **Preservation checking**: reuse/adapt the existing client preservation property test for tab membership (`filterByTab`), followed-first ordering (`orderByFollowed`, now any-of + date), and the origin indicator; adapt its generators to the News item shape and any-of semantics. Assert the envelope and decision tree are unchanged and non-Tweets sections are unaffected (Property 2).
+- **Interactions/any-of properties**: property tests for Property 3 (interactions-tab consistency) and Property 4 (any-of party/follow/order).
 
-### Exploratory Bug Condition Checking
+Existing x.com-specific tests that MUST be updated or retired because the item shape changed:
 
-**Goal**: Surface counterexamples that demonstrate the bug BEFORE implementing the fix. Confirm or refute the root cause analysis (empty fallback dataset served on the fallback branch). If refuted, re-hypothesize.
-
-**Test Plan**: Exercise `resolveTweets()` / `GET /api/tweets` with live posting disabled and assert on the served envelope and on the rendered section. Run these against the UNFIXED code to observe the empty result and confirm the cause is the empty dataset, not the control flow.
-
-**Test Cases**:
-1. **Fallback envelope is empty (server)**: With `isLivePostsEnabled()` false, assert `resolveTweets()` returns `{ posts: [], source: "fallback" }` (will show zero posts on unfixed code).
-2. **Recent tab empty state (client)**: Render `TweetsPage` with a `{ posts: [], source: "fallback" }` envelope and assert "No posts in this tab yet." appears on the default Recent tab (will fail to show posts on unfixed code).
-3. **All four tabs empty (client)**: With the empty fallback envelope, switch through all four tabs and assert each shows the empty state (will fail to show posts on unfixed code).
-4. **Live-failure-with-empty-cache fallback (server)**: With live posting enabled but the fetch outcome `failed` and an empty cache, assert the route resolves to `fallbackResponse()` and serves zero posts (edge case; empty on unfixed code).
-
-**Expected Counterexamples**:
-- The fallback envelope carries `posts: []`, so every tab renders the empty state.
-- Root cause confirmed: the data served on the fallback branch is empty; the decision tree and client filtering are correct.
-
-### Fix Checking
-
-**Goal**: Verify that for all inputs where the bug condition holds, the fixed system produces the expected behavior (a non-empty genuine dataset, Recent tab populated, every record genuine).
-
-**Pseudocode:**
-```
-FOR ALL input WHERE isBugCondition(input) DO
-  response := resolveTweets_fixed(input)          // fallback branch
-  ASSERT length(response.posts) >= 1
-  ASSERT response.source = "fallback"
-  ASSERT exists post IN response.posts WHERE "recent" IN post.tabs
-  FOR ALL post IN response.posts DO
-    ASSERT nonEmpty(post.text, post.authorName, post.authorHandle, post.sourceUrl)
-    ASSERT host(post.sourceUrl) = "x.com"
-    ASSERT isRealCount(post.likes) AND isRealCount(post.reposts)
-    ASSERT exists cand IN candidates
-           WHERE normalizeHandle(cand.handle) = normalizeHandle(post.authorHandle)
-           AND cand.id = post.candidateId
-  END FOR
-END FOR
-```
-
-### Preservation Checking
-
-**Goal**: Verify that for all inputs where the bug condition does NOT hold, the fixed system produces the same result as the original — the live/cache branches, the client rendering behavior, and all non-Tweets sections are unchanged.
-
-**Pseudocode:**
-```
-FOR ALL input WHERE NOT isBugCondition(input) DO
-  ASSERT resolveTweets_original(input) = resolveTweets_fixed(input)
-END FOR
-
-// Client rendering is pure over the served envelope:
-FOR ALL (posts, tab, following) DO
-  ASSERT filterByTab_fixed(posts, tab) = filterByTab_original(posts, tab)
-  ASSERT orderByFollowed_fixed(list, following) = orderByFollowed_original(list, following)
-END FOR
-```
-
-**Testing Approach**: Property-based testing is recommended for preservation checking because:
-- It generates many envelopes and follow sets automatically across the input domain.
-- It catches edge cases (empty follow set, overlapping tab membership, duplicate candidate ids) that manual unit tests might miss.
-- It gives strong guarantees that tab filtering, ordering, context rendering, and the origin indicator are unchanged for all inputs.
-
-The existing preservation property test `client/src/pages/genuineXPosts.preservation.property.test.tsx` (Property 2: tabs/ordering/context and the origin indicator) and the dataset property test `server/src/domain/tweets.property.test.ts` (Property 20: dataset 0..50, `x.com` host, real counts) already encode these guarantees and MUST continue to pass unchanged after the fix.
-
-**Test Plan**: Observe behavior on the UNFIXED code first for the live/cache branches and the client rendering, then confirm the same behavior holds after the fix. Reuse the existing property tests rather than duplicating them.
-
-**Test Cases**:
-1. **Live branch preservation**: Observe that a genuine live-returned post displays with its real `likes`/`reposts`; verify this continues after the fix (live pipeline untouched).
-2. **Tab/ordering/context preservation**: Observe that the four tabs partition by membership, followed candidates order first, and context blocks render on Needs Context; verify via the existing `genuineXPosts.preservation.property.test.tsx` after the fix.
-3. **Origin indicator preservation**: Observe that the Live / Cached / Fallback indicator renders per source; verify via the existing preservation test after the fix.
-4. **Genuine-only guarantee preservation**: Observe that `tweets.property.test.ts` holds (0..50, `x.com` host, real counts); verify it still passes after the dataset is populated.
-5. **Non-Tweets sections preservation**: Observe candidates/issues/causes/connect/election/quiz responses; verify they are byte-for-byte unchanged after the fix.
-
-### Unit Tests
-
-- Assert the populated `tweets` dataset is non-empty and contains at least one record whose `tabs` include `recent`.
-- Assert each record's `candidateId` resolves to a real candidate in `candidates.ts` and its `authorHandle` matches that candidate's `handle` under `normalizeHandle`.
-- Assert `resolveTweets()` on the fallback branch serves the populated dataset with `source: "fallback"`.
-- Assert the Recent tab of `TweetsPage` renders one or more posts (no empty state) given the populated fallback envelope.
-
-### Property-Based Tests
-
-- For every record in `tweets`: non-empty `text`/`authorName`/`authorHandle`/`sourceUrl`, `sourceUrl` host of `x.com`, real integer `likes`/`reposts`, and a candidate match by normalized handle and `candidateId` (extends/reuses Property 20).
-- For generated envelopes and follow sets: `filterByTab` partitions by membership and `orderByFollowed` floats followed candidates first (reuses the existing Property 2 preservation test).
-- For each source value: the origin indicator renders the corresponding Live / Cached / Fallback label (reuses the existing Property 2 preservation test).
-
-### Integration Tests
-
-- Full feed flow with live posting disabled: `GET /api/tweets` → `TweetsPage` renders the genuine fallback posts on the Recent tab with the Fallback origin indicator.
-- Context-switching flow: switch through all four tabs and confirm each shows exactly the posts whose `tabs` include that tab, with "Added context" blocks on Needs Context.
-- Live-then-fallback flow: with a `failed` live outcome and empty cache, confirm the section populates from the genuine fallback rather than showing the empty state.
+- `server/src/domain/tweets.property.test.ts` -- rewrite: assert Verified_Source (url http/https-resolvable, candidateIds validity, 0..100 bounds) INSTEAD of `sourceUrl` host `x.com` and `likes`/`reposts`.
+- `server/src/routes/data.emptyFallbackBugCondition.property.test.ts` -- update to assert a non-empty verified `News_Dataset` on the fallback branch rather than the empty-dataset bug condition.
+- `client/src/pages/genuineXPosts.preservation.property.test.tsx` and any `genuineXPosts.*` tests -- retire or rewrite against the News item shape and any-of semantics (drop handle/likes/reposts assertions).
+- `server/src/posts/provider.*` tests -- the handle-based exploration/mapping tests tied to x.com post shape are retired or reduced, since the live pipeline is dead-but-present for news; keep only what still verifies the preserved decision tree.

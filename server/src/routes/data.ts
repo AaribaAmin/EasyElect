@@ -84,10 +84,14 @@ async function resolveTweets(): Promise<
 
   switch (outcome.kind) {
     case "ok": {
-      // Success ⇒ map/filter done in the provider; store with a UTC timestamp
-      // and serve live (Req 6.1).
-      setCache(outcome.posts);
-      return { ok: true, body: { posts: outcome.posts, source: "live" } };
+      // The live x.com provider pipeline is dead-but-present for the repurposed
+      // News section: its mapped x.com `Tweet[]` do not fit the `News_Item`
+      // envelope this section now serves, so a successful live fetch stores and
+      // serves no items. The real data path is the curated fallback dataset.
+      // (Retiring/repurposing the provider itself is owned by task 5.4.)
+      const livePosts: TweetsResponse["posts"] = [];
+      setCache(livePosts);
+      return { ok: true, body: { posts: livePosts, source: "live" } };
     }
     case "rateLimited": {
       // Rate-limited with a non-empty cache ⇒ serve cache as success (Req 6.4).

@@ -9,10 +9,10 @@
  * The optional `now?` parameter on time-sensitive functions keeps the freshness
  * logic deterministic and unit-testable without faking the global clock.
  */
-import type { Tweet } from "../domain/types.js";
+import type { News_Item } from "../domain/types.js";
 
 export interface CacheEntry {
-  posts: Tweet[];
+  posts: News_Item[];
   /** UTC retrieval timestamp (epoch ms). */
   fetchedAt: number;
 }
@@ -27,7 +27,7 @@ const MAX_LIFETIME_SECONDS = 86400;
 let entry: CacheEntry | null = null;
 
 /** Replace cache contents and stamp the retrieval time (UTC). */
-export function setCache(posts: Tweet[], now?: number): void {
+export function setCache(posts: News_Item[], now?: number): void {
   entry = {
     posts,
     fetchedAt: now ?? Date.now(),

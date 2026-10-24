@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import fc from "fast-check";
 import { setCache, getCache } from "./cache.js";
-import type { Tweet } from "../domain/types.js";
+import type { News_Item } from "../domain/types.js";
 
 /**
  * Property 12: Cache store round-trips posts with a UTC timestamp.
@@ -15,27 +15,25 @@ import type { Tweet } from "../domain/types.js";
  * Validates: Requirements 6.1
  */
 
-/** Generator for an arbitrary `Tweet`, staying inside the declared shape. */
+/** Generator for an arbitrary `News_Item`, staying inside the declared shape. */
 const tabArb = fc.constantFrom(
   "recent",
   "notable",
   "needsContext",
   "interactions",
-) as fc.Arbitrary<Tweet["tabs"][number]>;
+) as fc.Arbitrary<News_Item["tabs"][number]>;
 
-const tweetArb: fc.Arbitrary<Tweet> = fc.record({
+const newsItemArb: fc.Arbitrary<News_Item> = fc.record({
   id: fc.string(),
-  candidateId: fc.string(),
-  authorName: fc.string(),
-  authorHandle: fc.string(),
-  text: fc.string(),
+  candidateIds: fc.array(fc.string(), { minLength: 1, maxLength: 3 }),
+  title: fc.string(),
+  outlet: fc.string(),
+  url: fc.webUrl(),
   date: fc.date({ noInvalidDate: true }).map((d) => d.toISOString()),
-  likes: fc.nat(),
-  reposts: fc.nat(),
   tabs: fc.array(tabArb),
 });
 
-const postsArb = fc.array(tweetArb, { maxLength: 20 });
+const postsArb = fc.array(newsItemArb, { maxLength: 20 });
 
 /** Non-negative integer epoch-ms timestamp (UTC). */
 const nowArb = fc.integer({ min: 0, max: 8640000000000000 });

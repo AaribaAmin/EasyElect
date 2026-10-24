@@ -158,3 +158,54 @@ Entry format:
 <!-- Append new removal entries below this line. Do not modify entries above it. -->
 
 _No removals recorded yet._
+
+---
+
+## 6. News_Dataset source log (`server/src/domain/tweets.ts`)
+
+The Tweets section was repurposed as a curated candidate **News feed**. The
+`tweets` export in [`server/src/domain/tweets.ts`](./tweets.ts) now holds a
+`News_Item[]` of real, publicly published articles tied to real candidates on
+the Massachusetts ballot. Every item is a **Verified_Source**: its `url`
+resolves over HTTP/HTTPS to a real article, its `title` is the real headline,
+its `outlet` is the real publisher, and its `date` is the real publication date
+(ISO 8601). Nothing is fabricated; candidates with no verifiable coverage
+contribute no items.
+
+Each item below was found and verified via web search/fetch on **2026-10-24**
+(verified-on). Items marked "fetched" were confirmed by retrieving the page and
+matching the headline; items marked "search" were confirmed from a reputable
+search result that returned the exact URL and headline (the page blocks
+automated fetching but is a reputable outlet or `.gov` source).
+
+| News item id | Candidate id(s) | Outlet | Published | URL | Verified |
+|---|---|---|---|---|---|
+| `news-healey-minogue-first-debate-wbur` | maura-healey, mike-minogue | WBUR | 2026-10-08 | https://www.wbur.org/news/2026/10/08/massachusetts-governor-gubernatorial-debate-keller-wbz | fetched |
+| `news-healey-minogue-first-debate-cbs` | maura-healey, mike-minogue | CBS News Boston | 2026-10-08 | https://www.cbsnews.com/boston/news/maura-healey-mike-minogue-massachusetts-governor-debate/ | fetched |
+| `news-healey-minogue-final-debate-boston` | maura-healey, mike-minogue | Boston.com | 2026-10-16 | https://www.boston.com/news/politics/2026/10/16/healey-and-minogue-made-their-final-pitches-to-voters-in-a-tense-debate-here-are-4-takeaways/ | fetched |
+| `news-healey-minogue-final-debate-wbjournal` | maura-healey, mike-minogue | Worcester Business Journal | 2026-10-16 | https://wbjournal.com/article/healey-minogue-clash-over-energy-costs-and-housing-construction-in-final-debate/ | fetched |
+| `news-minogue-blueprint-wgbh` | mike-minogue | GBH News | 2026-09-10 | https://www.wgbh.org/news/politics/2026-09-10/gops-minogue-rolls-out-his-pitch-for-governor-ahead-of-the-general | search (also cited in candidates.ts) |
+| `news-minogue-blueprint-wbur` | mike-minogue | WBUR | 2026-09-11 | https://www.wbur.org/news/2026/09/11/mike-minogue-gop-governor-policy-blueprint | search (also cited in candidates.ts) |
+| `news-markey-deaton-debate-boston` | edward-j-markey, john-deaton | Boston.com | 2026-10-13 | https://www.boston.com/news/politics/2026/10/13/ed-markey-john-deaton-senate-debate/ | fetched |
+| `news-ayyadurai-belmont-voice-lawsuit-boston` | shiva-ayyadurai | Boston.com | 2026-10-23 | https://www.boston.com/news/politics/2026/10/23/senate-candidate-shiva-ayyadurai-belmont-voice-lawsuit/ | fetched |
+| `news-campbell-meta-settlement-massgov` | andrea-joy-campbell | Mass.gov (Office of the Attorney General) | 2026-04-24 | https://www.mass.gov/news/ag-campbell-reaches-landmark-settlement-with-meta-that-requires-design-changes-to-protect-massachusetts-young-people-from-social-media-harms | search (mass.gov blocks automated fetch; HTTP 403) |
+| `news-dizoglio-question1-wgbh` | diana-dizoglio | GBH News | 2026-10-19 | https://www.wgbh.org/news/politics/2026-10-19/what-you-need-to-know-about-question-1-expanding-public-records-law | fetched |
+| `news-dizoglio-campbell-transparency-iberkshires` | diana-dizoglio, andrea-joy-campbell | iBerkshires | 2026-09-28 | https://www.iberkshires.com/story/84014/State-Auditor-DiZoglio-Pushes-for-Beacon-Hill-Transparency-.html | fetched |
+
+**Candidates searched but left out (no verifiable, candidate-specific news
+coverage found at verification time):** the remaining down-ballot
+Minimum_Viable_Records — `james-and-kittredge`, `joe-tache`, `michael-c-walsh`,
+`william-francis-galvin` (coverage found is primarily administrative
+secretary-of-state election-operations news rather than candidate coverage, so
+omitted to stay conservative), `anne-r-brensley`, `deborah-b-goldberg`,
+`elizabeth-dionne`, `al-ozonoff`, `james-p-mcgovern`, `tara-j-jacobs`,
+`joanne-m-comerford`, `lora-l-wondolowski`, `amy-e-lavallee`,
+`david-e-sullivan`, `daniel-francis-graves`, `lori-m-streeter`,
+`gary-edward-gagnon`, `jon-j-hall`, and `jane-m-peirce`. Per the Verified_Source
+discipline these contribute no items rather than placeholders.
+
+> **To refresh the News_Dataset:** re-verify each `url` resolves to its headline,
+> update this log's verified-on date, and add new items only after confirming the
+> outlet, headline, and date against the live page. Never fabricate a headline,
+> outlet, date, or URL; if coverage for a candidate cannot be verified, leave
+> them out.

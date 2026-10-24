@@ -60,6 +60,40 @@ export interface Issue {
 
 export type TweetTab = "recent" | "notable" | "needsContext" | "interactions";
 
+/**
+ * A curated, verified news item relevant to one or more candidates.
+ *
+ * Mirrors `News_Item` in server/src/domain/types.ts — keep the two in sync.
+ * This replaces the x.com-`Tweet` shape for the (repurposed) News section: the
+ * section serves real, publicly published articles instead of social posts, so
+ * an item carries a headline, outlet, resolvable source URL, and publication
+ * date, and may be tied to one or more candidates (any-of matching for the
+ * party/follow filters and followed-first ordering).
+ */
+export interface News_Item {
+  id: string;
+  /** One or more candidate ids (no duplicates), each matching a Candidate.id. */
+  candidateIds: string[];
+  /** The article headline. */
+  title: string;
+  /** The publisher / source name, e.g. "Boston Globe". */
+  outlet: string;
+  /** Resolvable HTTP/HTTPS link to the article (Verified_Source). */
+  url: string;
+  /** Publication date, ISO 8601. */
+  date: string;
+  /** Which tabs this item appears in (one or more). */
+  tabs: TweetTab[];
+  /** Optional neutral clarification shown on the Needs Context tab. */
+  context?: Explain;
+}
+
+/**
+ * @deprecated x.com-post shape retained only so client consumers (TweetCard,
+ * feedFilter, shape validators, and their tests) keep compiling until later
+ * tasks (1.3, 2.1/2.2, 3.2) migrate them to `News_Item`. The News section is
+ * served as `News_Item[]`; do not use this for new code.
+ */
 export interface Tweet {
   id: string;
   candidateId: string;
@@ -80,7 +114,7 @@ export type PostsSource = "live" | "cache" | "fallback";
 
 /** Envelope returned by GET /tweets: the posts plus where they came from. */
 export interface TweetsResponse {
-  posts: Tweet[];
+  posts: News_Item[];
   source: PostsSource;
 }
 

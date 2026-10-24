@@ -19,8 +19,8 @@ import type { Candidate, Party, TweetTab, TweetsResponse } from "../types/domain
 import styles from "../features/tweets/Tweets.module.css";
 
 const TABS: { id: TweetTab; label: string }[] = [
-  { id: "recent", label: "Recent Posts" },
-  { id: "notable", label: "Notable Posts" },
+  { id: "recent", label: "Recent News" },
+  { id: "notable", label: "Notable News" },
   { id: "needsContext", label: "Needs Context" },
   { id: "interactions", label: "Interactions" },
 ];
@@ -179,7 +179,9 @@ export default function TweetsPage() {
                       key={t.id}
                       tweet={t}
                       showContext={tab === "needsContext"}
-                      followed={followingSet.has(t.candidateId)}
+                      followed={t.candidateIds.some((id) =>
+                        followingSet.has(id)
+                      )}
                     />
                   ))}
                 </div>

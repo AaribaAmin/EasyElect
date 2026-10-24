@@ -1,0 +1,412 @@
+{
+  "pbtResults": {
+    "1. Write bug condition exploration test": {
+      "status": "passed",
+      "failingExample": "Property failed after 1 tests\n{ seed: 1563630852, path: \"0\", endOnFailure: true }\nCounterexample: [\"\"]\nShrunk 0 time(s)\nAssertionError: expected 0 to be greater than or equal to 1\n ❯ src/routes/data.emptyFallbackBugCondition.property.test.ts:121:41\n\nInterpretation: with the live-posts bearer token absent/empty (counterexample input \"\"), isLivePostsEnabled() is false, so GET /api/tweets resolves to the fallback branch of resolveTweets() and serves the Fallback_Posts_Dataset (tweets) verbatim. On unfixed code tweets = [], so the served envelope is { posts: [], source: \"fallback\" } and posts.length is 0, failing the assertion that at least one genuine post be served. This confirms the root cause: the data served on the fallback branch is empty; the decision tree and client filtering are correct.",
+      "lastRunTimestamp": 1792880190414
+    },
+    "2.3 Write property tests for the any-of filters and ordering": {
+      "status": "failed",
+      "failingExample": "Flaky failure (~50% of full-suite runs; e.g. seed 883687298). Failing sub-assertion: the stability oracle \"within each group items are non-increasing by parseable date, equal/unparseable dates keep input order\" (EQKEY-STABILITY-FAIL at feedFilter.property.test.ts:306).\n\nCounterexample (shrunk): a posts array where several items share id \"news-0\" because the generator derives id from fc.integer idx and the shrinker collapses multiple idx values to 0. Minimal case: items with dates [2026-01-01, 2026-03-15, 2026-11-03, 2026-03-15, not-a-date, 2026-03-15] all id \"news-0\", plus one id \"news-1\" dated 2026-03-15; followedSet empty.\n  EQKEY-STABILITY-FAIL k=1773576000000 (March 15) in=[\"news-0\",\"news-0\",\"news-0\",\"news-1\"] out=[\"news-0\",\"news-0\",\"news-1\",\"news-0\"]\n\nTriage: category 1 (test is incorrect), NOT a code or spec bug. The implementation orderByFollowed/byDateDesc is correct and matches the design (stable, most-recent-first, NaN/equal-timestamp ties preserve input order). The defect is in the test: newsItemArb builds id=`news-${idx}` from a non-unique integer, so fast-check shrinking produces multiple distinct items sharing one id; the stability oracle (checkStability) then tracks order by id and reports a false mismatch because it cannot tell same-id objects apart. Fix is to make the generated ids unique (e.g. fc.uniqueArray of idx, or an index-based id), leaving feedFilter.ts untouched.",
+      "lastRunTimestamp": 1792884706441
+    },
+    "5.1 Rewrite the dataset property test (`server/src/domain/tweets.property.test.ts`)": {
+      "status": "passed",
+      "lastRunTimestamp": 1792884153399
+    }
+  },
+  "executionHistory": {
+    "1. Write bug condition exploration test": [
+      {
+        "executionId": "ed739f42-a4c5-427f-9318-8256d483a71f",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792880014220
+      },
+      {
+        "executionId": "ed739f42-a4c5-427f-9318-8256d483a71f",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792880019121
+      },
+      {
+        "executionId": "ed739f42-a4c5-427f-9318-8256d483a71f",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792880207356
+      }
+    ],
+    "2. Write preservation property tests (BEFORE implementing fix)": [
+      {
+        "executionId": "ed739f42-a4c5-427f-9318-8256d483a71f",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792880014264
+      },
+      {
+        "executionId": "ed739f42-a4c5-427f-9318-8256d483a71f",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792880210396
+      },
+      {
+        "executionId": "ed739f42-a4c5-427f-9318-8256d483a71f",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792880283872
+      }
+    ],
+    "3.1 Populate the fallback dataset with genuine, verified x.com posts": [
+      {
+        "executionId": "ed739f42-a4c5-427f-9318-8256d483a71f",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792880014313
+      },
+      {
+        "executionId": "ed739f42-a4c5-427f-9318-8256d483a71f",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792880286542
+      },
+      {
+        "executionId": "ed739f42-a4c5-427f-9318-8256d483a71f",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792880389117
+      }
+    ],
+    "3.2 Verify bug condition exploration test now passes": [
+      {
+        "executionId": "ed739f42-a4c5-427f-9318-8256d483a71f",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792880014421
+      }
+    ],
+    "3.3 Verify preservation tests still pass": [
+      {
+        "executionId": "ed739f42-a4c5-427f-9318-8256d483a71f",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792880014497
+      }
+    ],
+    "4. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "ed739f42-a4c5-427f-9318-8256d483a71f",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792880014531
+      }
+    ],
+    "1.1 Define the News item type in `server/src/domain/types.ts`": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883134846
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883145897
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883279187
+      }
+    ],
+    "1.2 Mirror the News item type in `client/src/types/domain.ts`": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883134895
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883284268
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883358927
+      }
+    ],
+    "1.3 Update `client/src/lib/shape.ts` validators to the News item shape": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883134924
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883363989
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883459000
+      }
+    ],
+    "2.1 Adapt `resolveParty` and `applyFeedFilters` in `client/src/lib/feedFilter.ts`": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883134954
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883473036
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883618013
+      }
+    ],
+    "2.2 Adapt `orderByFollowed` in `client/src/lib/feedFilter.ts`": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883134986
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883621089
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883673947
+      }
+    ],
+    "3.1 Update tab labels in `client/src/pages/TweetsPage.tsx`": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883135017
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883681588
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883798079
+      }
+    ],
+    "3.2 Update `client/src/features/tweets/TweetCard.tsx` to render News items": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883135045
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883683062
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883798788
+      }
+    ],
+    "4. Populate the curated News_Dataset in `server/src/domain/tweets.ts`": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883135072
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883807060
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792884069079
+      }
+    ],
+    "5.1 Rewrite the dataset property test (`server/src/domain/tweets.property.test.ts`)": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883135103
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792884076566
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792884382752
+      }
+    ],
+    "5.2 Update the bug-condition test (`server/src/routes/data.emptyFallbackBugCondition.property.test.ts`)": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883135130
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792884077919
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792884384151
+      }
+    ],
+    "5.3 Adapt the client preservation test to the News item shape + any-of": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883135162
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792884079321
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792884385119
+      }
+    ],
+    "5.4 Retire or reduce the x.com provider tests (`server/src/posts/provider.*`)": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883135210
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792884080236
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792884386171
+      }
+    ],
+    "6. Checkpoint -- Ensure all builds and tests pass": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883135247
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792884390719
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792884780080
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792884782585
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792884874931
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792884877500
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792884990968
+      }
+    ],
+    "1.4 Write unit tests for the shape validators": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883138748
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883469923
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883617321
+      }
+    ],
+    "2.3 Write property tests for the any-of filters and ordering": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883139695
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883678887
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883796689
+      }
+    ],
+    "3.3 Write unit tests for `TweetCard` News rendering": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883140714
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883804459
+      },
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792884070103
+      }
+    ],
+    "1. Define the News_Item domain type and mirror it client-side": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883459058
+      }
+    ],
+    "2. Adapt pure filters and ordering to candidateIds any-of + date ordering": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883674003
+      }
+    ],
+    "3. Update the client rendering": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792883798822
+      }
+    ],
+    "5. Update and replace the property and unit tests": [
+      {
+        "executionId": "73b7a245-b473-4c89-a677-9c64f701d087",
+        "chatSessionId": "sess_ebb82806-7689-4378-b4a6-b7f59a646eaa",
+        "timestamp": 1792884386202
+      }
+    ]
+  }
+}

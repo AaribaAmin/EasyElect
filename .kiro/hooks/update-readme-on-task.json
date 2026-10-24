@@ -1,0 +1,13 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Update README on Task Completion",
+      "trigger": "PostTaskExec",
+      "action": {
+        "type": "agent",
+        "prompt": "A spec task just completed. This usually means a bug fix, new feature, or behavior change has landed in the codebase. Update the project README so it stays accurate.\n\nDo the following:\n1. Determine what actually changed in this task. Inspect the relevant spec (requirements.md, design.md, tasks.md) and the recent code changes to understand the fix or feature.\n2. Read the current README to understand its structure and existing content.\n3. Update the README to reflect the change:\n   - Decide the most appropriate placement yourself (e.g. features list, setup/usage, changelog, or a specs/overview section). Create a sensible section only if one is clearly warranted.\n   - Add or revise entries so they describe the current behavior concisely.\n   - Remove or correct any information that is now inaccurate or outdated as a result of this change.\n4. Keep edits focused and proportional — reflect only what this task actually changed. Do not invent features, fabricate version numbers, or document behavior you cannot verify in the code or spec.\n5. If nothing in the task is user-facing or relevant to the README, make no changes and say so briefly.\n\nMatch the README's existing tone, formatting, and heading style."
+      }
+    }
+  ]
+}

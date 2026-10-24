@@ -1,14 +1,14 @@
 import { describe, it, expect } from "vitest";
 import fc from "fast-check";
 import { filterByTab } from "./tweetFilter";
-import type { Tweet, TweetTab } from "../types/domain";
+import type { News_Item, TweetTab } from "../types/domain";
 
 /**
  * Property 16: Tab membership is preserved under filtering.
  *
- * For any served post and any tab `T` contained in that post's `tabs`,
- * filtering the served posts by `T` includes that post; tab filtering never
- * adds a post to a tab it was not assigned to nor drops a post from a tab it
+ * For any served News item and any tab `T` contained in that item's `tabs`,
+ * filtering the served items by `T` includes that item; tab filtering never
+ * adds an item to a tab it was not assigned to nor drops an item from a tab it
  * was assigned to.
  *
  * **Validates: Requirements 7.6**
@@ -27,27 +27,25 @@ const tabArb: fc.Arbitrary<TweetTab> = fc.constantFrom(...ALL_TABS);
 /** A post's tab assignment: a (possibly empty) subset of the four tabs. */
 const tabsArb: fc.Arbitrary<TweetTab[]> = fc.subarray(ALL_TABS);
 
-/** An array of posts with distinct ids so each can be tracked individually. */
-const postsArb: fc.Arbitrary<Tweet[]> = fc
+/** An array of News items with distinct ids so each can be tracked individually. */
+const postsArb: fc.Arbitrary<News_Item[]> = fc
   .array(tabsArb, { minLength: 0, maxLength: 12 })
   .chain((tabsList) =>
     fc.tuple(
       ...tabsList.map((tabs, i) =>
         fc.constant({
           id: `p${i}`,
-          candidateId: `c${i}`,
-          authorName: "Author",
-          authorHandle: "@author",
-          text: "post text",
+          candidateIds: [`c${i}`],
+          title: "news headline",
+          outlet: "Outlet",
+          url: `https://example.com/article/${i}`,
           date: "2024-01-01",
-          likes: 0,
-          reposts: 0,
           tabs,
-        } as Tweet)
+        } as News_Item)
       )
     )
   )
-  .map((posts) => posts as Tweet[]);
+  .map((posts) => posts as News_Item[]);
 
 describe("filterByTab — Property 16 (tab membership preserved under filtering)", () => {
   it("includes exactly the posts assigned to the tab (partition by membership)", () => {

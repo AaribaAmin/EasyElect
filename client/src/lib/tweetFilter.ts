@@ -7,14 +7,14 @@
  * of `TweetsPage`) lets it be unit- and property-tested in isolation (see the
  * tab-membership preservation property test, design Property 16).
  */
-import type { Tweet, TweetTab } from "../types/domain";
+import type { News_Item, TweetTab } from "../types/domain";
 
 /**
- * Return the posts assigned to `tab`, preserving input order. A post is
- * included exactly when `tab` is a member of its `tabs` array; no post is added
+ * Return the items assigned to `tab`, preserving input order. An item is
+ * included exactly when `tab` is a member of its `tabs` array; no item is added
  * to a tab it was not assigned to, and none is dropped from a tab it was
  * assigned to. The input array and its elements are never mutated.
  */
-export function filterByTab(posts: Tweet[], tab: TweetTab): Tweet[] {
+export function filterByTab(posts: News_Item[], tab: TweetTab): News_Item[] {
   return posts.filter((post) => post.tabs.includes(tab));
 }
