@@ -1,0 +1,70 @@
+import { candidates } from "./candidates.js";
+import type { Candidate } from "./types.js";
+
+/**
+ * Each candidate's position on an issue, placed on the same -2..2 spectrum the
+ * quiz options use (positive = more market/choice/rights-leaning, negative =
+ * more public/regulation/safety-leaning). This mirrors the stances in
+ * candidates.ts and is the ground truth the quiz scores against.
+ */
+export const candidateIssueValues: Record<string, Record<string, number>> = {
+  "harper-vega": { housing: 1, education: -1, climate: -1, transit: -1 },
+  "daniel-okafor": { housing: 2, healthcare: 2, guns: 2, transit: 1 },
+  "priya-nair": { healthcare: -1, climate: -2, education: -2, guns: -2 },
+  "marcus-lindqvist": { healthcare: 2, climate: 2, education: 2, guns: 1 },
+  "sofia-alvarez": { climate: -2, housing: -2, healthcare: -2 },
+};
+
+export interface QuizAnswer {
+  issueId: string;
+  value: number;
+}
+
+export interface MatchResult {
+  candidateId: string;
+  /** 0..100 alignment score; higher is a closer match. */
+  score: number;
+  /** Number of issues both the user and candidate had a position on. */
+  sharedIssues: number;
+}
+
+/**
+ * Scores the user's answers against every candidate.
+ *
+ * For each issue both the user and candidate have a value on, we measure the
+ * distance on the -2..2 scale (max distance 4) and convert it to a 0..1
+ * closeness. The candidate's score is the average closeness across shared
+ * issues, scaled to 0..100. Candidates sharing no issues score 0.
+ */
+export function scoreQuiz(
+  answers: QuizAnswer[],
+  roster: Candidate[] = candidates
+): MatchResult[] {
+  const userByIssue = new Map(answers.map((a) => [a.issueId, a.value]));
+
+  const results: MatchResult[] = roster.map((candidate) => {
+    const issueValues = candidateIssueValues[candidate.id] ?? {};
+    let total = 0;
+    let shared = 0;
+
+    for (const [issueId, candidateValue] of Object.entries(issueValues)) {
+      if (!userByIssue.has(issueId)) continue;
+      const userValue = userByIssue.get(issueId)!;
+      const distance = Math.abs(userValue - candidateValue); // 0..4
+      const closeness = 1 - distance / 4; // 1..0
+      total += closeness;
+      shared += 1;
+    }
+
+    const score = shared === 0 ? 0 : Math.round((total / shared) * 100);
+    return { candidateId: candidate.id, score, sharedIssues: shared };
+  });
+
+  // Highest score first; break ties by more shared issues then id for stability.
+  return results.sort(
+    (a, b) =>
+      b.score - a.score ||
+      b.sharedIssues - a.sharedIssues ||
+      a.candidateId.localeCompare(b.candidateId)
+  );
+}

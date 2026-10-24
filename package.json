@@ -1,0 +1,25 @@
+{
+  "name": "easyelect",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Easy Elect — makes politics, elections, candidates, and civic participation easy to understand. MVP scoped to the Massachusetts State Primary.",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently -n server,client -c blue,green \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:client": "npm --workspace client run dev",
+    "dev:server": "npm --workspace server run dev",
+    "build": "npm --workspace server run build && npm --workspace client run build",
+    "build:client": "npm --workspace client run build",
+    "build:server": "npm --workspace server run build",
+    "test": "npm --workspace server run test && npm --workspace client run test",
+    "test:client": "npm --workspace client run test",
+    "test:server": "npm --workspace server run test",
+    "start": "npm --workspace server run start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

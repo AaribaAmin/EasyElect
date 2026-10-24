@@ -1,0 +1,93 @@
+.picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.chip,
+.chipActive {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-4);
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+.chip {
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+}
+
+.chip:hover {
+  background: var(--color-surface-alt);
+}
+
+.chipActive {
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
+  border-color: var(--color-primary);
+}
+
+.hint {
+  color: var(--color-text-muted);
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 520px;
+}
+
+.table th,
+.table td {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table thead th {
+  background: var(--color-surface-alt);
+  position: sticky;
+  top: 0;
+}
+
+.colHead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  align-items: flex-start;
+}
+
+.rowHead {
+  background: var(--color-surface);
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.pos {
+  display: block;
+  color: var(--color-primary);
+  margin-bottom: var(--space-1);
+}
+
+.detail {
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+}
+
+.na {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
