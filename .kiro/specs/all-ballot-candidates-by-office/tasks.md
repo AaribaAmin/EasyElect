@@ -18,17 +18,17 @@ app and covered by tests. Tasks marked with `*` are optional test sub-tasks.
 ## Tasks
 
 - [ ] 1. Extend the Party union and runtime validator (shared contract)
-  - [ ] 1.1 Add the two new party members to both domain type files
+  - [-] 1.1 Add the two new party members to both domain type files
     - Add `"Socialism and Liberation"` and `"Unenrolled"` to the `Party` union in `server/src/domain/types.ts`
     - Add the identical two members, in the same order, to the `Party` union in `client/src/types/domain.ts`
     - Keep both unions byte-for-byte identical in member set and ordering
     - _Requirements: 6.1, 6.2, 7.1, 7.2_
-  - [ ] 1.2 Add the two new party members to the client runtime validator
+  - [~] 1.2 Add the two new party members to the client runtime validator
     - Add `"Socialism and Liberation"` and `"Unenrolled"` to the `PARTIES` array in `client/src/lib/shape.ts` so `validateCandidate`/`validateCandidateList` accept them
     - _Requirements: 7.4_
 
 - [ ] 2. Expand the candidate dataset to the full ballot
-  - [ ] 2.1 Add Minimum_Viable_Records for every remaining ballot candidate
+  - [~] 2.1 Add Minimum_Viable_Records for every remaining ballot candidate
     - In `server/src/domain/candidates.ts`, leave the existing `maura-healey` and `mike-minogue` records unchanged (same ids, same researched content) — Governor race (Req 1.2)
     - Add one `Candidate` record per remaining ballot candidate across all 14 races in the design roster table (Senator in Congress, Governor Independent ticket, Attorney General, Secretary of State, Treasurer, Auditor, Representative in Congress, Councillor, Senator in General Court, Representative in General Court, District Attorney, Register of Probate, Sheriff (Vacancy), Council of Governments Executive Committee)
     - Each new record is a Minimum_Viable_Record: URL-safe kebab-case `id` (unique within the dataset), verbatim ballot `name`, correct `party`/`office`/`district`, `tagline: ""`, `bio: { simple: "", expert: "" }`, `stances: []`, and `source` = the Official_Ballot_Source `{ name, url, reviewedOn: "2026-10-24" }`
@@ -39,7 +39,7 @@ app and covered by tests. Tasks marked with `*` are optional test sub-tasks.
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 2.1, 2.2, 2.3, 2.4, 5.1, 5.2, 5.3, 5.4, 5.5, 6.3_
 
 - [ ] 3. Add the dataset completeness/validity helper
-  - [ ] 3.1 Implement OFFICIAL_BALLOT_ROSTER and checkDatasetCompleteness
+  - [~] 3.1 Implement OFFICIAL_BALLOT_ROSTER and checkDatasetCompleteness
     - Add `BallotEntry` (`name`, `office`, `district`, `party`), `OFFICIAL_BALLOT_ROSTER: readonly BallotEntry[]`, `DatasetCompleteness` (`complete`, `missing`, `extra`), and `checkDatasetCompleteness(dataset, roster?)` co-located with the dataset (or in `server/src/domain/candidates.validation.ts`)
     - Match records to roster entries by `name`; report `missing` (ballot names with no record, Req 1.6) and `extra` (record names not on the ballot, Req 1.1); set `complete` true only when both are empty
     - _Requirements: 1.1, 1.6_
@@ -64,11 +64,11 @@ app and covered by tests. Tasks marked with `*` are optional test sub-tasks.
     - Extend the validity test's `PARTY_SET` with the two new members and assert every candidate's `party` is in the union; `numRuns: 100`
     - Tag `Feature: all-ballot-candidates-by-office, Property 10`
 
-- [ ] 4. Checkpoint - Ensure dataset and type tests pass
+- [~] 4. Checkpoint - Ensure dataset and type tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 5. Implement the pure race-grouping helper
-  - [ ] 5.1 Create groupCandidatesByRace in client/src/lib/raceGroups.ts
+  - [~] 5.1 Create groupCandidatesByRace in client/src/lib/raceGroups.ts
     - Add `RaceGroup` (`office`, `district`, `candidates`), `RaceFilters` (`query`, `party`), and `groupCandidatesByRace(candidates, filters): RaceGroup[]`
     - Filter each candidate by both the party filter (`party === "all" || c.party === party`) and the query (case-insensitive `includes` over name/office/party/district); a candidate must pass both
     - Key by `normalize(office) + "\u0000" + normalize(district)` where `normalize(s) = s.trim().toLowerCase()`
@@ -102,14 +102,14 @@ app and covered by tests. Tasks marked with `*` are optional test sub-tasks.
     - Tag `Feature: all-ballot-candidates-by-office, Property 9`; `numRuns: 100`
 
 - [ ] 6. Render grouped candidates in the candidate list
-  - [ ] 6.1 Convert CandidatesList to grouped rendering
+  - [~] 6.1 Convert CandidatesList to grouped rendering
     - In `client/src/features/voting/CandidatesList.tsx`, replace the flat `filtered` grid with `const groups = useMemo(() => groupCandidatesByRace(state.data ?? [], { query, party }), [state.data, query, party]);`
     - Keep the party-`<select>` options derived from the full dataset
     - Render each group as a `<section>` with a heading showing both office and district (e.g. `"{office} · {district}"`); render the existing card grid for `group.candidates` inside each group
     - When `groups.length === 0`, render the existing empty-state card ("No candidates match…")
     - Guard the per-card office label: show `office · district` only when `office` is a non-empty string, otherwise show district alone with no office label and no error
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 4.1, 4.4_
-  - [ ] 6.2 Add race-group styles
+  - [~] 6.2 Add race-group styles
     - Add `.raceGroup` and `.raceHeading` classes to `client/src/features/voting/Voting.module.css`, reusing existing `.grid`, `.candidateCard`, `.office`
     - _Requirements: 3.3_
   - [ ]* 6.3 Write component tests for CandidatesList
@@ -117,7 +117,7 @@ app and covered by tests. Tasks marked with `*` are optional test sub-tasks.
     - _Requirements: 3.3, 3.5, 3.7_
 
 - [ ] 7. Handle empty content in the candidate detail view
-  - [ ] 7.1 Guard empty office, stances, and bio in CandidateDetail
+  - [~] 7.1 Guard empty office, stances, and bio in CandidateDetail
     - In `client/src/features/voting/CandidateDetail.tsx`, render `office · district` only when `office` is non-empty; otherwise render district alone with no office label and no error
     - When `c.stances.length === 0`, render "Positions are not yet available for this candidate." instead of mapping an empty array
     - When `bio.simple === "" && bio.expert === ""`, render no placeholder or fabricated biography text (the biography area shows zero biography characters)
@@ -128,11 +128,11 @@ app and covered by tests. Tasks marked with `*` are optional test sub-tasks.
     - _Requirements: 4.4, 5.6, 5.7_
 
 - [ ] 8. Render every party label with a safe fallback
-  - [ ] 8.1 Extend PartyBadge for the new members and unknown values
+  - [~] 8.1 Extend PartyBadge for the new members and unknown values
     - In `client/src/features/voting/PartyBadge.tsx`, add `"Socialism and Liberation": styles.psl` and `"Unenrolled": styles.ind` to the `PARTY_CLASS` map
     - Use `PARTY_CLASS[party] ?? styles.ind` and a label fallback (`typeof party === "string" && party.length > 0 ? party : "Unknown"`) so an out-of-union value renders a badge without throwing
     - _Requirements: 6.5, 6.6_
-  - [ ] 8.2 Add the .psl badge style
+  - [~] 8.2 Add the .psl badge style
     - Add a distinct `.psl` class (with its `[data-theme="dark"]` variant) to `client/src/features/voting/PartyBadge.module.css`
     - _Requirements: 6.5_
   - [ ]* 8.3 Write component tests for PartyBadge
@@ -147,7 +147,7 @@ app and covered by tests. Tasks marked with `*` are optional test sub-tasks.
     - Extend `server/src/domain/quizScoring.test.ts`: for a fixed answer set the researched candidates (Healey, Minogue) keep their scores and ranking, and stance-less candidates score 0 and rank last
     - _Requirements: (Req 5 side effect)_
 
-- [ ] 10. Final checkpoint - Run full build and test suites
+- [~] 10. Final checkpoint - Run full build and test suites
   - Run the server and client build and test suites (vitest, non-watch) and fix any failures until both pass
   - Ensure all tests pass, ask the user if questions arise.
 

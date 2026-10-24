@@ -1,0 +1,244 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Define module scaffolding, sentinel, and types in `client/src/lib/feedFilter.ts`": [
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876743094
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876748709
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876824845
+      }
+    ],
+    "1.2 Implement `buildPartyIndex` and `resolveParty`": [
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876743146
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876828231
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876957631
+      }
+    ],
+    "1.4 Implement `partyOptions`": [
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876743196
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876828864
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876958368
+      }
+    ],
+    "2.1 Implement `applyFeedFilters` in `client/src/lib/feedFilter.ts`": [
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876743235
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876961845
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877072711
+      }
+    ],
+    "2.2 Extract `orderByFollowed` into the pure module": [
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876743268
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876962858
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877073752
+      }
+    ],
+    "3. Checkpoint - pure module complete and verified": [
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876743301
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877085139
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877125202
+      }
+    ],
+    "4.1 Add candidates fetch and Party_Index derivation in `client/src/pages/TweetsPage.tsx`": [
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876743326
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877143130
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877208319
+      }
+    ],
+    "4.2 Add filter state and replace inline ordering with the pure functions": [
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876743360
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877210595
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877272705
+      }
+    ],
+    "5.1 Render the party `<select>` and following-only toggle": [
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876743392
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877280479
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877348268
+      }
+    ],
+    "5.2 Implement the four-branch empty-state decision and feed render": [
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876743526
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877352190
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877433278
+      }
+    ],
+    "6.1 Add CSS for the filter toolbar in `client/src/features/tweets/Tweets.module.css`": [
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876743570
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877281341
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877349202
+      }
+    ],
+    "7. Final checkpoint - full feature verified": [
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876743614
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877436038
+      },
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877518744
+      }
+    ],
+    "1. Create the pure feed-filter module with types and helpers": [
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792876958418
+      }
+    ],
+    "2. Implement the combined filter and extract follow-first ordering": [
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877073792
+      }
+    ],
+    "4. Rewire `TweetsPage` to load candidates and own filter state": [
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877272756
+      }
+    ],
+    "6. Add toolbar/select/toggle styles": [
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877349234
+      }
+    ],
+    "5. Add the filter controls and empty-state branching to `TweetsPage`": [
+      {
+        "executionId": "034fe969-2a5e-4c5b-8bdc-2c52f3f65a75",
+        "chatSessionId": "sess_2a0f7ae0-98e8-4e7f-9cd4-359e3fc5d451",
+        "timestamp": 1792877433398
+      }
+    ]
+  }
+}

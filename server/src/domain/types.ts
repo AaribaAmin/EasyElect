@@ -19,7 +19,9 @@ export type Party =
   | "Independent"
   | "Libertarian"
   | "Green-Rainbow"
-  | "Nonpartisan";
+  | "Nonpartisan"
+  | "Socialism and Liberation"
+  | "Unenrolled";
 
 /** Where a record's information originated, for attribution. */
 export interface SourceAttribution {

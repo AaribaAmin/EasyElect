@@ -6,13 +6,13 @@ This plan builds the feature bottom-up: the React-free pure module (`client/src/
 
 ## Tasks
 
-- [ ] 1. Create the pure feed-filter module with types and helpers
-  - [ ] 1.1 Define module scaffolding, sentinel, and types in `client/src/lib/feedFilter.ts`
+- [x] 1. Create the pure feed-filter module with types and helpers
+  - [x] 1.1 Define module scaffolding, sentinel, and types in `client/src/lib/feedFilter.ts`
     - Create `client/src/lib/feedFilter.ts` importing only `Party`, `Tweet`, `TweetTab` from `../types/domain` and `filterByTab` from `./tweetFilter` (no React import, resides beside `tweetFilter.ts`)
     - Export the `ALL_PARTIES = "all" as const` sentinel, `PartySelection = Party | typeof ALL_PARTIES`, `PartyIndex = ReadonlyMap<string, Party>`, and the `FeedFilterInput` interface (`posts`, `tab`, `party`, `followingOnly`, `followedSet`, `partyIndex`) matching the design signatures
     - _Requirements: 7.2, 7.3_
 
-  - [ ] 1.2 Implement `buildPartyIndex` and `resolveParty`
+  - [x] 1.2 Implement `buildPartyIndex` and `resolveParty`
     - `buildPartyIndex(candidates)` returns a `Map<string, Party>` keyed by `id` (last write wins on duplicate ids)
     - `resolveParty(post, partyIndex)` returns `partyIndex.get(post.candidateId)`, yielding `undefined` for missing/null/absent `candidateId` (Unresolved_Post classification)
     - _Requirements: 2.1, 2.2_
@@ -23,7 +23,7 @@ This plan builds the feature bottom-up: the React-free pure module (`client/src/
     - In `client/src/lib/feedFilter.test.ts`, generate candidate lists with distinct ids and assert `resolveParty` returns the recorded party for present ids and `undefined` for absent/empty/unknown ids
     - Tag: `// Feature: tweets-filter-by-party-and-following, Property 6: Party resolution round-trips the index`
 
-  - [ ] 1.4 Implement `partyOptions`
+  - [x] 1.4 Implement `partyOptions`
     - Return each distinct party present among candidates exactly once, sorted ascending alphabetically; empty input yields `[]`
     - _Requirements: 1.1, 1.6_
 
@@ -33,13 +33,13 @@ This plan builds the feature bottom-up: the React-free pure module (`client/src/
     - Assert de-duplication, ascending alphabetical order, membership equality with the input's distinct parties, and `[]` for empty input
     - Tag: `// Feature: tweets-filter-by-party-and-following, Property 8: Party options are the distinct parties, sorted, sentinel-prefixed`
 
-- [ ] 2. Implement the combined filter and extract follow-first ordering
-  - [ ] 2.1 Implement `applyFeedFilters` in `client/src/lib/feedFilter.ts`
+- [x] 2. Implement the combined filter and extract follow-first ordering
+  - [x] 2.1 Implement `applyFeedFilters` in `client/src/lib/feedFilter.ts`
     - Compose three predicates over a fresh array: tab via `filterByTab`; party pass when `party === ALL_PARTIES` else `resolveParty(post) === party` (Unresolved_Posts excluded); following pass when `!followingOnly` else `followedSet.has(post.candidateId)`
     - Include a post only when it satisfies all three; preserve input relative order; return a newly allocated array and mutate none of `posts`, `followedSet`, or `partyIndex`; empty result (not error) when nothing qualifies
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 1.3, 1.4, 1.5, 2.3, 2.4, 3.3, 3.4, 3.7, 4.1, 7.1, 7.4, 7.5, 7.6, 7.7_
 
-  - [ ] 2.2 Extract `orderByFollowed` into the pure module
+  - [x] 2.2 Extract `orderByFollowed` into the pure module
     - Move follow-first ordering out of `TweetsPage` into `client/src/lib/feedFilter.ts` as a React-free `orderByFollowed(list, followedSet)` that stably partitions followed-candidate posts ahead of the rest, preserving relative order within each group, returning a new array without mutation
     - _Requirements: 5.7_
 
@@ -89,26 +89,26 @@ This plan builds the feature bottom-up: the React-free pure module (`client/src/
     - Import `feedFilter.ts` and invoke `applyFeedFilters` once with representative inputs to confirm it runs without importing any React component and accepts exactly the specified parameters
     - _Requirements: 7.2, 7.3_
 
-- [ ] 3. Checkpoint - pure module complete and verified
+- [x] 3. Checkpoint - pure module complete and verified
   - Run `vitest --run` for `feedFilter.test.ts` and `tsc` build. Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 4. Rewire `TweetsPage` to load candidates and own filter state
-  - [ ] 4.1 Add candidates fetch and Party_Index derivation in `client/src/pages/TweetsPage.tsx`
+- [x] 4. Rewire `TweetsPage` to load candidates and own filter state
+  - [x] 4.1 Add candidates fetch and Party_Index derivation in `client/src/pages/TweetsPage.tsx`
     - Add a second `useValidatedApiData<Candidate[]>("/api/candidates", validateCandidateList)` fetch; derive the Party_Index with `buildPartyIndex` and the party options with `partyOptions` via `useMemo`
     - Treat a candidates fetch/validation failure as an empty Party_Index (every post Unresolved) so the tweets feed still renders and the party `<select>` offers only "All parties"
     - _Requirements: 1.6_
 
-  - [ ] 4.2 Add filter state and replace inline ordering with the pure functions
+  - [x] 4.2 Add filter state and replace inline ordering with the pure functions
     - Add `tab` (default `recent`), `selectedParty: PartySelection` (default `ALL_PARTIES`), and `followingOnly` (default `false`) via `useState`; derive `followedSet = new Set(following)` with `useMemo`
     - Remove the inline `orderByFollowed`; compute `filtered = applyFeedFilters({ posts, tab, party: selectedParty, followingOnly, followedSet, partyIndex })` then `ordered = followingOnly ? filtered : orderByFollowed(filtered, followedSet)`
     - _Requirements: 1.2, 3.2, 5.7, 5.8_
 
-- [ ] 5. Add the filter controls and empty-state branching to `TweetsPage`
-  - [ ] 5.1 Render the party `<select>` and following-only toggle
+- [x] 5. Add the filter controls and empty-state branching to `TweetsPage`
+  - [x] 5.1 Render the party `<select>` and following-only toggle
     - Add a toolbar with a party `<select>` mirroring `CandidatesList` (visually-hidden `label` + `htmlFor`, "All parties" sentinel option followed by `partyOptions`) and a labeled checkbox toggle for "Only candidates I follow", wiring both to state
     - _Requirements: 1.1, 1.3, 1.4, 1.7, 3.1, 3.3, 3.4, 3.5, 5.8, 6.2_
 
-  - [ ] 5.2 Implement the four-branch empty-state decision and feed render
+  - [x] 5.2 Implement the four-branch empty-state decision and feed render
     - Render exactly one of: "you follow no one" with a `<Link to="/voting/candidates">`; "followed candidates have no posts"; "no posts match these filters" plus an actionable hint; or the `ordered` feed — never an empty-state message concurrently with any post; never reset `tab`/`selectedParty`/`followingOnly` across branches
     - _Requirements: 4.2, 4.3, 4.4, 4.5, 6.1, 6.2, 6.3, 6.4, 3.6_
 
@@ -117,12 +117,12 @@ This plan builds the feature bottom-up: the React-free pure module (`client/src/
     - Cover: party defaults to "All parties" and has an accessible label; following toggle defaults off and has an accessible label; the three distinct empty states and the directory-link navigation; `<select>` lists "All parties" plus distinct parties; changing party or toggling following updates the feed in the same render while retaining selections
     - _Requirements: 1.1, 1.2, 1.7, 3.1, 3.2, 3.5, 3.6, 4.2, 4.3, 4.4, 4.5, 5.8, 6.1, 6.2, 6.3, 6.4_
 
-- [ ] 6. Add toolbar/select/toggle styles
-  - [ ] 6.1 Add CSS for the filter toolbar in `client/src/features/tweets/Tweets.module.css`
+- [x] 6. Add toolbar/select/toggle styles
+  - [x] 6.1 Add CSS for the filter toolbar in `client/src/features/tweets/Tweets.module.css`
     - Add classes for the toolbar layout, the party `<select>`, and the following-only toggle, consistent with the existing voting toolbar/select styling
     - _Requirements: 1.1, 3.1_
 
-- [ ] 7. Final checkpoint - full feature verified
+- [x] 7. Final checkpoint - full feature verified
   - Run `vitest --run` across the new and affected tests and the `tsc`/`vite build`. Ensure all tests pass, ask the user if questions arise.
 
 ## Notes

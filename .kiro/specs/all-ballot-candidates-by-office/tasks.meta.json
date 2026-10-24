@@ -1,0 +1,94 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Add the two new party members to both domain type files": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792877533125
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792877538450
+      }
+    ],
+    "1.2 Add the two new party members to the client runtime validator": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792877533169
+      }
+    ],
+    "2.1 Add Minimum_Viable_Records for every remaining ballot candidate": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792877533247
+      }
+    ],
+    "3.1 Implement OFFICIAL_BALLOT_ROSTER and checkDatasetCompleteness": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792877533292
+      }
+    ],
+    "4. Checkpoint - Ensure dataset and type tests pass": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792877533332
+      }
+    ],
+    "5.1 Create groupCandidatesByRace in client/src/lib/raceGroups.ts": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792877533366
+      }
+    ],
+    "6.1 Convert CandidatesList to grouped rendering": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792877533400
+      }
+    ],
+    "6.2 Add race-group styles": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792877533441
+      }
+    ],
+    "7.1 Guard empty office, stances, and bio in CandidateDetail": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792877533496
+      }
+    ],
+    "8.1 Extend PartyBadge for the new members and unknown values": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792877533525
+      }
+    ],
+    "8.2 Add the .psl badge style": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792877533557
+      }
+    ],
+    "10. Final checkpoint - Run full build and test suites": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792877533587
+      }
+    ]
+  }
+}
