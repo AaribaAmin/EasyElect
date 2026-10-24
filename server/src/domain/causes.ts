@@ -10,7 +10,7 @@ export const causes: Cause[] = [
     id: "housing",
     title: "Housing",
     icon: "🏠",
-    keywords: ["housing", "rent", "homes", "affordable", "eviction", "landlord", "tenant"],
+    keywords: ["housing", "rent", "homes", "eviction", "landlord", "tenant"],
     blurb: {
       simple: "Making it possible for people to afford a place to live.",
       expert:

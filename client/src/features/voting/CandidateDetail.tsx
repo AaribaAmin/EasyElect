@@ -1,5 +1,7 @@
 import { Link, useParams } from "react-router-dom";
-import { useApiData } from "../../lib/useApi";
+import { useApiData, useValidatedApiData } from "../../lib/useApi";
+import { validateCandidate } from "../../lib/shape";
+import { isDisplayableSourceUrl } from "../../lib/url";
 import AsyncContent from "../../components/AsyncContent";
 import Explainer from "../../components/Explainer";
 import PartyBadge from "./PartyBadge";
@@ -13,7 +15,10 @@ import styles from "./Voting.module.css";
  */
 export default function CandidateDetail() {
   const { id } = useParams();
-  const state = useApiData<Candidate>(`/api/candidates/${id}`);
+  const state = useValidatedApiData<Candidate>(
+    `/api/candidates/${id}`,
+    validateCandidate
+  );
   const issuesState = useApiData<Issue[]>("/api/issues");
 
   const issuesById = new Map(
@@ -56,6 +61,24 @@ export default function CandidateDetail() {
                   </a>
                 </p>
               )}
+              <p className={styles.sourceAttribution}>
+                {isDisplayableSourceUrl(c.source.url) ? (
+                  <>
+                    Source:{" "}
+                    <a
+                      href={c.source.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {c.source.name}
+                    </a>
+                  </>
+                ) : (
+                  <span className={styles.sourceUnavailable}>
+                    Source unavailable
+                  </span>
+                )}
+              </p>
             </section>
 
             <section aria-label="Positions">

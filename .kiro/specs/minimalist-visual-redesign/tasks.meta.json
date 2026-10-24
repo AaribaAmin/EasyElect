@@ -1,0 +1,631 @@
+{
+  "pbtResults": {
+    "1.2 Write property tests for the color utility in `client/src/lib/color.test.ts`": {
+      "status": "passed",
+      "lastRunTimestamp": 1792872423695
+    },
+    "3.5 Write property tests for the Icon component in `client/src/components/icons/Icon.test.tsx`": {
+      "status": "passed",
+      "lastRunTimestamp": 1792872874014
+    }
+  },
+  "executionHistory": {
+    "1.1 Create `client/src/lib/color.ts` with `hexToHsl`, `relativeLuminance`, `contrastRatio`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871835795
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871842970
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871957505
+      }
+    ],
+    "1.2 Write property tests for the color utility in `client/src/lib/color.test.ts`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871835823
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872224695
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872448215
+      }
+    ],
+    "2.1 Create `client/src/styles/tokens.ts` mirroring the committed token values": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871835863
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871963514
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872221278
+      }
+    ],
+    "2.2 Write property + parity tests in `client/src/styles/tokens.test.ts`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871835902
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872226146
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872446025
+      }
+    ],
+    "3.1 Create `client/src/components/icons/types.ts`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871835929
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871843653
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871958529
+      }
+    ],
+    "3.2 Create `client/src/components/icons/glyphs.tsx`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871835959
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871964679
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872220630
+      }
+    ],
+    "3.3 Create `client/src/components/icons/Icon.module.css`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871835985
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871965555
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872219166
+      }
+    ],
+    "3.4 Create `client/src/components/icons/Icon.tsx`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836010
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872227079
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872447584
+      }
+    ],
+    "3.5 Write property tests for the Icon component in `client/src/components/icons/Icon.test.tsx`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836037
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872457218
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872885224
+      }
+    ],
+    "4. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836068
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872970379
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873022681
+      }
+    ],
+    "5.1 Replace light-theme (`:root`) and dark-theme (`[data-theme=\"dark\"]`) palette values": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836093
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872228246
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872449703
+      }
+    ],
+    "5.2 Apply `var(name, light-default)` fallbacks and token-sourced shared classes": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836119
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872458313
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872811711
+      }
+    ],
+    "5.3 Set typography and spacing rhythm tokens in `global.css`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836151
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872891148
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872960831
+      }
+    ],
+    "5.4 Write CSS-invariant property tests in `client/src/styles/css-invariants.test.ts`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836195
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873141227
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873423723
+      }
+    ],
+    "6.1 Update `client/src/lib/sections.ts`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836226
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872456326
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872809382
+      }
+    ],
+    "6.2 Update `client/src/components/PageHeader.tsx`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836253
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872454858
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872810328
+      }
+    ],
+    "6.3 Write property test for SECTIONS color references in `client/src/styles/css-invariants.test.ts`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836282
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873426713
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873477770
+      }
+    ],
+    "7.1 Update `client/src/pages/HomePage.module.css` responsive grid": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836310
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873029069
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873134744
+      }
+    ],
+    "7.2 Update `client/src/pages/HomePage.tsx` to render icons and per-card backgrounds": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836342
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873030511
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873131420
+      }
+    ],
+    "7.3 Write example tests for per-card application and grid in `client/src/pages/HomePage.test.tsx`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836368
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873490877
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873662568
+      }
+    ],
+    "8.1 Replace the brand mark in `client/src/components/Layout.tsx`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836396
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873031415
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873130156
+      }
+    ],
+    "8.2 Replace the theme indicator in `client/src/components/SettingsToggles.tsx`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836428
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873032896
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873132412
+      }
+    ],
+    "8.3 Replace the chatbot launcher glyph in `client/src/components/chatbot/Chatbot.tsx`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836459
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873033814
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873133843
+      }
+    ],
+    "8.4 Replace tweet markers in `client/src/features/tweets/TweetCard.tsx`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836485
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873140324
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873421621
+      }
+    ],
+    "8.5 Confirm FollowButton conforms to shared button tokens in `client/src/features/voting/FollowButton.module.css`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836512
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873138882
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873423030
+      }
+    ],
+    "9. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836544
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873849498
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792874187159
+      }
+    ],
+    "10.1 Write icons-replace-emoji tests": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836570
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873490111
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873659662
+      }
+    ],
+    "10.2 Write button-consistency tests": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836602
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873488777
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873661047
+      }
+    ],
+    "10.3 Write typography and spacing-rhythm tests": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836635
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873487679
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873658666
+      }
+    ],
+    "10.4 Write cross-page consistency tests": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836666
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873486736
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873663059
+      }
+    ],
+    "10.5 Write behavior-preservation tests": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836694
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873668043
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873846102
+      }
+    ],
+    "10.6 Write reduced-motion and focus tests": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836720
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873667310
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873846622
+      }
+    ],
+    "11. Final verification - confirm the suite is green": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792871836749
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792874189728
+      },
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792874262087
+      }
+    ],
+    "2. Create the typed token module (single source of truth)": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872446050
+      }
+    ],
+    "1. Implement the WCAG color utility": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872448240
+      }
+    ],
+    "3. Build the inline SVG icon system": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792872885262
+      }
+    ],
+    "8. Replace remaining emoji with icons across shared surfaces": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873423065
+      }
+    ],
+    "5. Update design tokens and shared classes in `global.css`": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873423766
+      }
+    ],
+    "6. Retype SECTIONS metadata and PageHeader": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873477815
+      }
+    ],
+    "7. Apply the home-page grid and per-card coloring": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873662628
+      }
+    ],
+    "10. Add example and integration tests for cross-cutting criteria": [
+      {
+        "executionId": "e603e5eb-14c8-4781-85d4-95f1a51f4628",
+        "chatSessionId": "sess_de2a075f-592b-425a-8264-fa8b778faeaf",
+        "timestamp": 1792873846653
+      }
+    ]
+  }
+}

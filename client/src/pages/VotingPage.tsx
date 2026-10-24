@@ -20,7 +20,7 @@ export default function VotingPage() {
   return (
     <div>
       <PageHeader
-        icon="🗳️"
+        icon="voting"
         title="Voting"
         subtitle="Get to know who's on your ballot, what they stand for, and how to cast your vote."
       />

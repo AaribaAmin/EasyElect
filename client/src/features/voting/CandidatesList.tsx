@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { useApiData } from "../../lib/useApi";
+import { useValidatedApiData } from "../../lib/useApi";
+import { validateCandidateList } from "../../lib/shape";
 import { useFollow } from "../../context/FollowContext";
 import AsyncContent from "../../components/AsyncContent";
 import PartyBadge from "./PartyBadge";
@@ -13,7 +14,10 @@ import styles from "./Voting.module.css";
  * Each card shows a follow toggle; followed candidates drive the Tweets feed.
  */
 export default function CandidatesList() {
-  const state = useApiData<Candidate[]>("/api/candidates");
+  const state = useValidatedApiData<Candidate[]>(
+    "/api/candidates",
+    validateCandidateList
+  );
   const { isFollowing } = useFollow();
   const [query, setQuery] = useState("");
   const [party, setParty] = useState<"all" | Party>("all");

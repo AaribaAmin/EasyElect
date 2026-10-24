@@ -176,3 +176,12 @@
 .empty {
   color: var(--color-text-muted);
 }
+.sourceAttribution {
+  margin: var(--space-3) 0 0;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.sourceUnavailable {
+  font-style: italic;
+}

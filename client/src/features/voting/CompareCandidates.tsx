@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
-import { useApiData } from "../../lib/useApi";
-import { useSettings, pickVariant } from "../../context/SettingsContext";
+import { useApiData, useValidatedApiData } from "../../lib/useApi";
+import { validateCandidateList } from "../../lib/shape";
+import { useSettings } from "../../context/SettingsContext";
+import { selectVariant, DETAIL_UNAVAILABLE } from "../../lib/explain";
 import AsyncContent from "../../components/AsyncContent";
 import PartyBadge from "./PartyBadge";
 import type { Candidate, Issue } from "../../types/domain";
@@ -11,7 +13,10 @@ import styles from "./Compare.module.css";
  * aligned row-by-row across every issue, respecting the simple/expert mode.
  */
 export default function CompareCandidates() {
-  const candidatesState = useApiData<Candidate[]>("/api/candidates");
+  const candidatesState = useValidatedApiData<Candidate[]>(
+    "/api/candidates",
+    validateCandidateList
+  );
   const issuesState = useApiData<Issue[]>("/api/issues");
   const { mode } = useSettings();
   const [selected, setSelected] = useState<string[]>([]);
@@ -105,7 +110,17 @@ export default function CompareCandidates() {
                                   {stance.position}
                                 </strong>
                                 <span className={styles.detail}>
-                                  {pickVariant(stance.detail, mode)}
+                                  {(() => {
+                                    const sel = selectVariant(
+                                      stance.detail,
+                                      mode
+                                    );
+                                    return sel.available ? (
+                                      sel.text
+                                    ) : (
+                                      <em>{DETAIL_UNAVAILABLE}</em>
+                                    );
+                                  })()}
                                 </span>
                               </>
                             ) : (

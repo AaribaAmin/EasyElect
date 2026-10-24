@@ -19,7 +19,7 @@ export default function CausesPage() {
   return (
     <div>
       <PageHeader
-        icon="🎯"
+        icon="causes"
         title="Causes"
         subtitle="The things you care about. Tell Ask Easy Elect a topic — like “I care about housing” — and a card shows up here to refine."
       />

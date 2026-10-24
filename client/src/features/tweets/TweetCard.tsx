@@ -2,6 +2,7 @@ import { useState } from "react";
 import { apiPost } from "../../lib/api";
 import { useSettings } from "../../context/SettingsContext";
 import Explainer from "../../components/Explainer";
+import Icon from "../../components/icons/Icon";
 import type { Tweet } from "../../types/domain";
 import styles from "./Tweets.module.css";
 
@@ -77,8 +78,13 @@ export default function TweetCard({
       <p className={styles.tweetText}>{tweet.text}</p>
 
       <footer className={styles.tweetFoot}>
-        <span>♥ {tweet.likes.toLocaleString()}</span>
-        <span>🔁 {tweet.reposts.toLocaleString()}</span>
+        <span>
+          <Icon name="like" size="sm" decorative /> {tweet.likes.toLocaleString()}
+        </span>
+        <span>
+          <Icon name="repost" size="sm" decorative />{" "}
+          {tweet.reposts.toLocaleString()}
+        </span>
         {tweet.sourceUrl && (
           <a href={tweet.sourceUrl} target="_blank" rel="noopener noreferrer">
             Source
@@ -88,7 +94,9 @@ export default function TweetCard({
 
       {showContext && (
         <aside className={styles.context}>
-          <span className={styles.contextLabel}>ℹ️ Added context</span>
+          <span className={styles.contextLabel}>
+            <Icon name="info" size="sm" decorative /> Added context
+          </span>
           {tweet.context ? (
             <Explainer content={tweet.context} className={styles.contextBody} />
           ) : dynamicContext ? (

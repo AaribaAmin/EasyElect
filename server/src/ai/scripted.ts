@@ -68,7 +68,7 @@ export function scriptedReply(message: string, mode: DetailMode): string {
 
   // Fallback.
   return mode === "simple"
-    ? "I can help with candidates, issues, how to vote, and causes you care about. Try telling me a topic, like \"I care about housing\" or \"tell me about Harper Vega\"."
+    ? "I can help with candidates, issues, how to vote, and causes you care about. Try telling me a topic, like \"I care about housing\" or \"tell me about Maura Healey\"."
     : "I can assist with candidate platforms, policy areas, voting procedure, and mapping your interests to causes. Try naming a policy area or a candidate.";
 }
 

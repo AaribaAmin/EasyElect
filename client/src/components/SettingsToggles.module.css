@@ -27,18 +27,25 @@
   color: var(--color-primary-contrast);
 }
 
+/* Icon button: radius, padding, and focus treatment are sourced from the
+   same tokens as the shared .btn class so the control stays dimensionally
+   and visually consistent with every other button. */
 .themeBtn {
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  border-radius: 999px;
-  width: 38px;
-  height: 38px;
-  font-size: 1.1rem;
+  border: 1px solid var(--color-border, #d7deec);
+  background: var(--color-surface, #fbfcff);
+  color: var(--color-text, #232a39);
+  border-radius: var(--radius-sm, 6px);
+  padding: var(--space-2, 8px);
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
 .themeBtn:hover {
-  background: var(--color-surface-alt);
+  background: var(--color-surface-alt, #eaeef6);
+}
+
+.themeBtn:focus-visible {
+  outline: 2px solid var(--color-primary, #5f7fca);
+  outline-offset: 2px;
 }

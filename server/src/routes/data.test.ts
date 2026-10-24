@@ -49,13 +49,22 @@ describe("data endpoints", () => {
   it("serves tweets attributed to real candidates", async () => {
     const res = await request(app).get("/api/tweets");
     expect(res.status).toBe(200);
-    for (const t of res.body) {
+    // The endpoint now returns a TweetsResponse envelope { posts, source }.
+    expect(["live", "cache", "fallback"]).toContain(res.body.source);
+    expect(Array.isArray(res.body.posts)).toBe(true);
+    for (const t of res.body.posts) {
       expect(candidatesById.has(t.candidateId)).toBe(true);
       expect(Array.isArray(t.tabs)).toBe(true);
       if (t.context) expectExplain(t.context);
     }
-    // At least one post must carry context for the Needs Context tab.
-    expect(res.body.some((t: { context?: unknown }) => t.context)).toBe(true);
+    // When posts are present, at least one must carry context for the Needs
+    // Context tab. The genuine-only fallback dataset is empty when no verified
+    // x.com posts exist, in which case there is nothing to assert.
+    if (res.body.posts.length > 0) {
+      expect(
+        res.body.posts.some((t: { context?: unknown }) => t.context)
+      ).toBe(true);
+    }
   });
 
   it("serves causes with keywords and related issues", async () => {

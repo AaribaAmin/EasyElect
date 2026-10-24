@@ -16,15 +16,15 @@ describe("FollowContext", () => {
   it("follows and unfollows, persisting to localStorage", () => {
     const { result } = renderHook(() => useFollow(), { wrapper });
 
-    expect(result.current.isFollowing("harper-vega")).toBe(false);
+    expect(result.current.isFollowing("maura-healey")).toBe(false);
 
-    act(() => result.current.toggleFollow("harper-vega"));
-    expect(result.current.isFollowing("harper-vega")).toBe(true);
+    act(() => result.current.toggleFollow("maura-healey"));
+    expect(result.current.isFollowing("maura-healey")).toBe(true);
     expect(result.current.count).toBe(1);
-    expect(readStorage<string[]>("follows", [])).toContain("harper-vega");
+    expect(readStorage<string[]>("follows", [])).toContain("maura-healey");
 
-    act(() => result.current.toggleFollow("harper-vega"));
-    expect(result.current.isFollowing("harper-vega")).toBe(false);
-    expect(readStorage<string[]>("follows", [])).not.toContain("harper-vega");
+    act(() => result.current.toggleFollow("maura-healey"));
+    expect(result.current.isFollowing("maura-healey")).toBe(false);
+    expect(readStorage<string[]>("follows", [])).not.toContain("maura-healey");
   });
 });

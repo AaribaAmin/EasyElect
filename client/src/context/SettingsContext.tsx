@@ -77,15 +77,11 @@ export function useSettings(): SettingsContextValue {
 }
 
 /**
- * Content shape carrying both detail levels. The `pick` helper returns the
- * variant matching the current mode, falling back to simple if expert is empty.
+ * Content shape carrying both detail levels. Variant selection for the current
+ * Detail_Mode lives in `lib/explain.ts` (`selectVariant`), which reports
+ * "detail unavailable" when the matching variant is missing (Req 8.1, 8.2).
  */
 export interface Explain {
   simple: string;
   expert: string;
-}
-
-export function pickVariant(content: Explain, mode: DetailMode): string {
-  if (mode === "expert") return content.expert || content.simple;
-  return content.simple || content.expert;
 }

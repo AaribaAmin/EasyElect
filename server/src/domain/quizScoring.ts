@@ -3,16 +3,36 @@ import type { Candidate } from "./types.js";
 
 /**
  * Each candidate's position on an issue, placed on the same -2..2 spectrum the
- * quiz options use (positive = more market/choice/rights-leaning, negative =
- * more public/regulation/safety-leaning). This mirrors the stances in
- * candidates.ts and is the ground truth the quiz scores against.
+ * quiz options use (positive = more market/choice/deregulation-leaning,
+ * negative = more public/regulation/safety-leaning). This mirrors the stances
+ * in candidates.ts and is the ground truth the quiz scores against.
+ *
+ * maura-healey leans public/regulation/safety on every issue (negative):
+ * state investment to build homes, advancing clean energy, investing Fair
+ * Share revenue in transit and education, strengthening gun safety, and
+ * lowering health care costs through caps and oversight.
+ *
+ * mike-minogue leans market/deregulation on every issue he has a sourced
+ * stance on (positive): speeding permitting / easing building rules, repealing
+ * the net-zero mandate, eliminating the gas tax, and lowering health care
+ * costs through less state policy. He has no sourced guns stance, so guns is
+ * omitted.
  */
 export const candidateIssueValues: Record<string, Record<string, number>> = {
-  "harper-vega": { housing: 1, education: -1, climate: -1, transit: -1 },
-  "daniel-okafor": { housing: 2, healthcare: 2, guns: 2, transit: 1 },
-  "priya-nair": { healthcare: -1, climate: -2, education: -2, guns: -2 },
-  "marcus-lindqvist": { healthcare: 2, climate: 2, education: 2, guns: 1 },
-  "sofia-alvarez": { climate: -2, housing: -2, healthcare: -2 },
+  "maura-healey": {
+    housing: -2,
+    climate: -2,
+    transit: -1,
+    education: -2,
+    guns: -2,
+    healthcare: -1,
+  },
+  "mike-minogue": {
+    housing: 2,
+    climate: 2,
+    transit: 2,
+    healthcare: 1,
+  },
 };
 
 export interface QuizAnswer {

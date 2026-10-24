@@ -1,0 +1,145 @@
+{
+  "pbtResults": {
+    "1. Write bug condition exploration test": {
+      "status": "passed",
+      "failingExample": "Bug confirmed — exploration test failed on unfixed code as expected. Counterexamples:\n- detectCauses(\"I want affordable healthcare\") returns [\"housing\", \"healthcare\"] instead of [\"healthcare\"]\n- detectCauses(\"affordable college\") returns [\"housing\", \"education\"] instead of [\"education\"]\n- detectCauses(\"is anything affordable anymore\") returns [\"housing\"] instead of []\n- fast-check counterexample: {\"keyword\":\"healthcare\",\"causeId\":\"healthcare\"} → detectCauses(\"affordable healthcare\") returns [\"housing\",\"healthcare\"]\nRoot cause confirmed: the generic \"affordable\" keyword in the Housing cause's keywords array is matched by substring in detectCauses.",
+      "lastRunTimestamp": 1792865420201
+    },
+    "3.2 Verify bug condition exploration test now passes": {
+      "status": "passed",
+      "lastRunTimestamp": 1792865787420
+    },
+    "3.3 Verify preservation tests still pass": {
+      "status": "passed",
+      "lastRunTimestamp": 1792865841054
+    }
+  },
+  "executionHistory": {
+    "1. Write bug condition exploration test": [
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865296630
+      },
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865301864
+      },
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865436367
+      }
+    ],
+    "2. Write preservation property tests (BEFORE implementing fix)": [
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865296684
+      },
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865438786
+      },
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865647819
+      }
+    ],
+    "3.1 Remove the over-broad \"affordable\" keyword from the Housing cause": [
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865296746
+      },
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865650472
+      },
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865682169
+      }
+    ],
+    "3.2 Verify bug condition exploration test now passes": [
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865296786
+      },
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865684689
+      },
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865796642
+      }
+    ],
+    "3.3 Verify preservation tests still pass": [
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865296820
+      },
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865798885
+      },
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865849802
+      }
+    ],
+    "4. Add integration tests for POST /api/chat": [
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865296854
+      },
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865852309
+      },
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865903151
+      }
+    ],
+    "5. Checkpoint - Ensure the full build and test suite pass": [
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865296886
+      },
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865905545
+      },
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792866014243
+      }
+    ],
+    "3. Fix for Housing cause matching affordability-framed non-housing queries": [
+      {
+        "executionId": "54345e86-dc36-4621-b512-e0149efa49a9",
+        "chatSessionId": "sess_77f2442c-ab36-47c8-b88e-d297ea02d753",
+        "timestamp": 1792865849852
+      }
+    ]
+  }
+}

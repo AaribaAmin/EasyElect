@@ -1,5 +1,7 @@
 import { type ReactNode } from "react";
 import styles from "./PageHeader.module.css";
+import Icon from "./icons/Icon";
+import type { IconName } from "./icons/types";
 
 export default function PageHeader({
   icon,
@@ -7,7 +9,7 @@ export default function PageHeader({
   subtitle,
   children,
 }: {
-  icon?: string;
+  icon?: IconName;
   title: string;
   subtitle?: string;
   children?: ReactNode;
@@ -16,8 +18,8 @@ export default function PageHeader({
     <header className={styles.header}>
       <h1 className={styles.title}>
         {icon && (
-          <span aria-hidden="true" className={styles.icon}>
-            {icon}
+          <span className={styles.icon}>
+            <Icon name={icon} decorative />
           </span>
         )}
         {title}

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { apiPost } from "../../lib/api";
 import { useSettings } from "../../context/SettingsContext";
 import { useCauses } from "../../context/CausesContext";
+import Icon from "../icons/Icon";
 import styles from "./Chatbot.module.css";
 
 /**
@@ -118,7 +119,7 @@ export default function Chatbot() {
           aria-label={open ? "Collapse chat" : "Expand chat"}
           onClick={() => setOpen((o) => !o)}
         >
-          <span aria-hidden="true">💬</span>
+          <Icon name="chat" decorative />
         </button>
         <label htmlFor="chat-input" className="visually-hidden">
           Ask Easy Elect

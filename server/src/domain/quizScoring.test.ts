@@ -3,37 +3,37 @@ import { scoreQuiz, candidateIssueValues } from "./quizScoring.js";
 
 describe("scoreQuiz", () => {
   it("ranks the most aligned candidate first", () => {
-    // Answers matching Marcus Lindqvist's values exactly.
+    // Answers matching Mike Minogue's market/deregulation-leaning values.
     const answers = [
-      { issueId: "healthcare", value: 2 },
+      { issueId: "housing", value: 2 },
       { issueId: "climate", value: 2 },
-      { issueId: "education", value: 2 },
-      { issueId: "guns", value: 1 },
+      { issueId: "transit", value: 2 },
+      { issueId: "healthcare", value: 1 },
     ];
     const results = scoreQuiz(answers);
-    expect(results[0].candidateId).toBe("marcus-lindqvist");
+    expect(results[0].candidateId).toBe("mike-minogue");
     expect(results[0].score).toBe(100);
   });
 
-  it("ranks a progressive answer set toward progressive candidates", () => {
+  it("ranks a public/regulation answer set toward Maura Healey", () => {
     const answers = [
-      { issueId: "healthcare", value: -2 },
+      { issueId: "healthcare", value: -1 },
       { issueId: "climate", value: -2 },
       { issueId: "housing", value: -2 },
     ];
     const results = scoreQuiz(answers);
-    // Sofia Alvarez matches all three exactly -> top and perfect score.
-    expect(results[0].candidateId).toBe("sofia-alvarez");
+    // Maura Healey matches all three exactly -> top and perfect score.
+    expect(results[0].candidateId).toBe("maura-healey");
     expect(results[0].score).toBe(100);
   });
 
   it("gives candidates with no shared issues a score of 0", () => {
-    const answers = [{ issueId: "transit", value: 1 }];
+    const answers = [{ issueId: "guns", value: 1 }];
     const results = scoreQuiz(answers);
-    // Priya Nair has no transit value, so she shares no issues here.
-    const priya = results.find((r) => r.candidateId === "priya-nair")!;
-    expect(priya.sharedIssues).toBe(0);
-    expect(priya.score).toBe(0);
+    // Mike Minogue has no guns value, so he shares no issues here.
+    const minogue = results.find((r) => r.candidateId === "mike-minogue")!;
+    expect(minogue.sharedIssues).toBe(0);
+    expect(minogue.score).toBe(0);
   });
 
   it("produces scores within 0..100 for arbitrary answers", () => {
@@ -49,7 +49,7 @@ describe("scoreQuiz", () => {
   });
 
   it("keeps candidate value maps consistent with known ids", () => {
-    expect(Object.keys(candidateIssueValues)).toContain("harper-vega");
-    expect(candidateIssueValues["harper-vega"].housing).toBe(1);
+    expect(Object.keys(candidateIssueValues)).toContain("maura-healey");
+    expect(candidateIssueValues["maura-healey"].housing).toBe(-2);
   });
 });

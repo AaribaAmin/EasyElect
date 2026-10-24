@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { SECTIONS } from "../lib/sections";
 import ApiStatus from "../components/ApiStatus";
 import AiStatus from "../components/AiStatus";
+import Icon from "../components/icons/Icon";
 import styles from "./HomePage.module.css";
 
 export default function HomePage() {
@@ -31,9 +32,18 @@ export default function HomePage() {
 
       <nav aria-label="Sections" className={styles.cards}>
         {SECTIONS.map((s) => (
-          <Link key={s.id} to={s.path} className={styles.card}>
+          <Link
+            key={s.id}
+            to={s.path}
+            className={styles.card}
+            style={{
+              background: s.color
+                ? `var(${s.color}, var(--color-surface))`
+                : "var(--color-surface)",
+            }}
+          >
             <span className={styles.icon} aria-hidden="true">
-              {s.icon}
+              <Icon name={s.icon} decorative />
             </span>
             <h2 className={styles.cardTitle}>{s.title}</h2>
             <p className={styles.tagline}>{s.tagline}</p>

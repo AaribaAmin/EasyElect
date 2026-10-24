@@ -1,11 +1,14 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { useApiData } from "../lib/useApi";
+import { useValidatedApiData } from "../lib/useApi";
+import { validateTweetsResponse } from "../lib/shape";
+import { filterByTab } from "../lib/tweetFilter";
 import { useFollow } from "../context/FollowContext";
 import PageHeader from "../components/PageHeader";
+import PostsStatus from "../components/PostsStatus";
 import AsyncContent from "../components/AsyncContent";
 import TweetCard from "../features/tweets/TweetCard";
-import type { Tweet, TweetTab } from "../types/domain";
+import type { Tweet, TweetTab, TweetsResponse } from "../types/domain";
 import styles from "../features/tweets/Tweets.module.css";
 
 const TABS: { id: TweetTab; label: string }[] = [
@@ -22,7 +25,10 @@ const TABS: { id: TweetTab; label: string }[] = [
  * posts) when the user follows no one.
  */
 export default function TweetsPage() {
-  const state = useApiData<Tweet[]>("/api/tweets");
+  const state = useValidatedApiData<TweetsResponse>(
+    "/api/tweets",
+    validateTweetsResponse
+  );
   const { following, count } = useFollow();
   const [tab, setTab] = useState<TweetTab>("recent");
 
@@ -41,7 +47,7 @@ export default function TweetsPage() {
   return (
     <div>
       <PageHeader
-        icon="💬"
+        icon="tweets"
         title="Tweets"
         subtitle="Posts from the candidates, with added context where it helps. Follow candidates in Voting to tune your feed."
       />
@@ -74,24 +80,26 @@ export default function TweetsPage() {
       )}
 
       <AsyncContent state={state}>
-        {(tweets) => {
-          const inTab = orderByFollowed(
-            tweets.filter((t) => t.tabs.includes(tab))
-          );
-          if (inTab.length === 0) {
-            return <p className={`card ${styles.empty}`}>No posts in this tab yet.</p>;
-          }
+        {(response) => {
+          const inTab = orderByFollowed(filterByTab(response.posts, tab));
           return (
-            <div className={styles.feed}>
-              {inTab.map((t) => (
-                <TweetCard
-                  key={t.id}
-                  tweet={t}
-                  showContext={tab === "needsContext"}
-                  followed={followingSet.has(t.candidateId)}
-                />
-              ))}
-            </div>
+            <>
+              <PostsStatus source={response.source} />
+              {inTab.length === 0 ? (
+                <p className={`card ${styles.empty}`}>No posts in this tab yet.</p>
+              ) : (
+                <div className={styles.feed}>
+                  {inTab.map((t) => (
+                    <TweetCard
+                      key={t.id}
+                      tweet={t}
+                      showContext={tab === "needsContext"}
+                      followed={followingSet.has(t.candidateId)}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
           );
         }}
       </AsyncContent>

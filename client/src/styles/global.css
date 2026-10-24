@@ -7,20 +7,32 @@
 --------------------------------------------------------------------------- */
 
 :root {
-  /* Light theme (default) */
-  --color-bg: #f7f8fa;
-  --color-surface: #ffffff;
-  --color-surface-alt: #eef1f6;
-  --color-border: #d9dee8;
-  --color-text: #1a1f2b;
-  --color-text-muted: #5a6475;
-  --color-primary: #2563eb;
-  --color-primary-contrast: #ffffff;
-  --color-primary-soft: #dbe6ff;
-  --color-accent: #7c3aed;
-  --color-danger: #dc2626;
-  --color-success: #16a34a;
-  --color-warning: #d97706;
+  /* Light theme (default) — Pastel_Palette */
+  --color-bg: #f4f6fb;
+  --color-surface: #fbfcff;
+  --color-surface-alt: #eaeef6;
+  --color-border: #d7deec;
+  --color-text: #232a39;
+  --color-text-muted: #5c6678;
+  --color-primary: #5f7fca;
+  --color-primary-contrast: #0e1322;
+  --color-primary-soft: #dfe6f7;
+  --color-accent: #b089d1;
+  --color-danger: #d4766f;
+  --color-success: #6fb08a;
+  --color-warning: #d0a46b;
+
+  /* Per-card pastel surface tokens (light) */
+  --card-voting: #e7eefb;
+  --card-tweets: #e6f3ee;
+  --card-causes: #fbeee6;
+  --card-connect: #f1e9f7;
+
+  /* Icon-size tokens (theme-independent) */
+  --icon-size-sm: 1rem;
+  --icon-size-md: 1.5rem;
+  --icon-size-lg: 2.25rem;
+
   --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
   --shadow-md: 0 4px 14px rgba(16, 24, 40, 0.1);
 
@@ -43,19 +55,26 @@
 }
 
 [data-theme="dark"] {
-  --color-bg: #0f1420;
-  --color-surface: #171d2b;
-  --color-surface-alt: #1f2736;
-  --color-border: #2b3345;
-  --color-text: #eef1f6;
+  --color-bg: #12161f;
+  --color-surface: #191e2a;
+  --color-surface-alt: #212736;
+  --color-border: #2d3547;
+  --color-text: #e9edf5;
   --color-text-muted: #9aa5b8;
-  --color-primary: #5b8cff;
-  --color-primary-contrast: #0b1020;
-  --color-primary-soft: #223154;
-  --color-accent: #a78bfa;
-  --color-danger: #f87171;
-  --color-success: #4ade80;
-  --color-warning: #fbbf24;
+  --color-primary: #8098d6;
+  --color-primary-contrast: #0e1322;
+  --color-primary-soft: #26314d;
+  --color-accent: #b79ad8;
+  --color-danger: #e58e86;
+  --color-success: #79c79c;
+  --color-warning: #e0b67e;
+
+  /* Per-card pastel surface tokens (dark) */
+  --card-voting: #1b2740;
+  --card-tweets: #162b26;
+  --card-causes: #33241a;
+  --card-connect: #271b33;
+
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
 }
@@ -71,10 +90,22 @@ body {
 }
 
 body {
-  font-family: var(--font-sans);
+  /* Base family from the --font-sans token with a system fallback, and a
+     comfortable body line-height inside the [1.5, 1.8] readability band. */
+  font-family: var(
+    --font-sans,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif
+  );
+  font-size: 1rem;
   background: var(--color-bg);
   color: var(--color-text);
-  line-height: 1.5;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -87,12 +118,47 @@ a:hover {
   text-decoration: underline;
 }
 
+/* Type scale (mirrors TYPE_SCALE in tokens.ts): single-valued per level and
+   monotonically non-increasing — h1 ≥ h2 ≥ h3 ≥ h4 ≥ body. Heading and body
+   color reference only --color-text; no hardcoded color literals. */
 h1,
 h2,
 h3,
 h4 {
+  color: var(--color-text);
   line-height: 1.2;
   margin: 0 0 var(--space-3);
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+h4 {
+  font-size: 1.125rem;
+}
+
+/* Muted text utility — the one muted-color source, referencing only the
+   --color-text-muted token (no hardcoded literal). */
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+/* Long-form prose container: constrains the line length to a comfortable
+   measure (~68ch, within the 60–80ch readability range) so blocks of running
+   text stay scannable. Centered within its column. */
+.prose {
+  max-width: 68ch;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 button {
@@ -101,9 +167,9 @@ button {
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-primary);
+  outline: 3px solid var(--color-primary, #5f7fca);
   outline-offset: 2px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-sm, 6px);
 }
 
 .app-root {
@@ -134,62 +200,78 @@ button {
   border: 0;
 }
 
-/* Generic reusable surface card */
+/* Generic reusable surface card.
+   Every token carries its light-theme default as the var() fallback so a
+   missing token degrades to the shared system value instead of unset. */
 .card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  padding: var(--space-5);
+  background: var(--color-surface, #fbfcff);
+  border: 1px solid var(--color-border, #d7deec);
+  border-radius: var(--radius-md, 12px);
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(16, 24, 40, 0.06));
+  padding: var(--space-5, 24px);
 }
 
-/* Generic button styles */
+/* Generic button styles.
+   .btn and .btn-primary share identical radius (--radius-sm) and padding
+   (--space-3 vertical / --space-4 horizontal) so every variant is dimensionally
+   consistent; only color treatment differs. */
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  color: var(--color-text);
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-sm);
+  gap: var(--space-2, 8px);
+  border: 1px solid var(--color-border, #d7deec);
+  background: var(--color-surface, #fbfcff);
+  color: var(--color-text, #232a39);
+  padding: var(--space-3, 12px) var(--space-4, 16px);
+  border-radius: var(--radius-sm, 6px);
   font-size: 0.95rem;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease,
+    filter 0.15s ease;
 }
 
 .btn:hover {
-  background: var(--color-surface-alt);
+  background: var(--color-surface-alt, #eaeef6);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary, #5f7fca);
+  outline-offset: 2px;
 }
 
 .btn-primary {
-  background: var(--color-primary);
-  color: var(--color-primary-contrast);
-  border-color: var(--color-primary);
+  background: var(--color-primary, #5f7fca);
+  color: var(--color-primary-contrast, #0e1322);
+  border-color: var(--color-primary, #5f7fca);
+  padding: var(--space-3, 12px) var(--space-4, 16px);
+  border-radius: var(--radius-sm, 6px);
 }
 
 .btn-primary:hover {
   filter: brightness(1.05);
-  background: var(--color-primary);
+}
+
+.btn-primary:focus-visible {
+  outline: 2px solid var(--color-primary, #5f7fca);
+  outline-offset: 2px;
 }
 
 .badge {
   display: inline-block;
   font-size: 0.75rem;
   font-weight: 600;
-  padding: 2px var(--space-2);
-  border-radius: 999px;
-  background: var(--color-primary-soft);
-  color: var(--color-primary);
+  padding: var(--space-1, 4px) var(--space-2, 8px);
+  border-radius: var(--radius-lg, 18px);
+  background: var(--color-primary-soft, #dfe6f7);
+  color: var(--color-primary, #5f7fca);
 }
 
-/* Respect users who prefer reduced motion. */
+/* Respect users who prefer reduced motion: no transition or animation plays. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    animation: none !important;
+    transition: none !important;
     scroll-behavior: auto !important;
   }
 }

@@ -43,7 +43,7 @@ export default function ConnectPage() {
   return (
     <div>
       <PageHeader
-        icon="🤝"
+        icon="connect"
         title="Connect"
         subtitle="Groups, events, projects, and petitions tied to the causes you care about. Find your people and get involved."
       />

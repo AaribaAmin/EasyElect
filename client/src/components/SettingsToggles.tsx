@@ -1,4 +1,5 @@
 import { useSettings } from "../context/SettingsContext";
+import Icon from "./icons/Icon";
 import styles from "./SettingsToggles.module.css";
 
 /**
@@ -43,7 +44,7 @@ export default function SettingsToggles() {
         aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
         title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
       >
-        <span aria-hidden="true">{theme === "dark" ? "🌙" : "☀️"}</span>
+        <Icon name={theme === "dark" ? "moon" : "sun"} decorative />
       </button>
     </div>
   );

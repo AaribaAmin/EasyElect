@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useApiData } from "../../lib/useApi";
+import { useApiData, useValidatedApiData } from "../../lib/useApi";
+import { validateCandidateList } from "../../lib/shape";
 import AsyncContent from "../../components/AsyncContent";
 import Explainer from "../../components/Explainer";
 import PartyBadge from "./PartyBadge";
@@ -12,7 +13,10 @@ import styles from "./Voting.module.css";
  */
 export default function IssuesExplorer() {
   const issuesState = useApiData<Issue[]>("/api/issues");
-  const candidatesState = useApiData<Candidate[]>("/api/candidates");
+  const candidatesState = useValidatedApiData<Candidate[]>(
+    "/api/candidates",
+    validateCandidateList
+  );
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   return (

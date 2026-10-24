@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { SECTIONS } from "../lib/sections";
 import SettingsToggles from "./SettingsToggles";
 import Chatbot from "./chatbot/Chatbot";
+import Icon from "./icons/Icon";
 import styles from "./Layout.module.css";
 
 /**
@@ -20,8 +21,8 @@ export default function Layout({ children }: { children: ReactNode }) {
       <header className={styles.header}>
         <div className={styles.headerInner}>
           <Link to="/" className={styles.brand} aria-label="Easy Elect home">
-            <span aria-hidden="true" className={styles.brandMark}>
-              🗳️
+            <span className={styles.brandMark}>
+              <Icon name="brand" decorative />
             </span>
             <span>
               Easy<strong>Elect</strong>

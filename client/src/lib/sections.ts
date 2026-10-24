@@ -1,3 +1,5 @@
+import type { IconName } from "../components/icons/types";
+
 /**
  * The four top-level sections of Easy Elect. Shared by the home page cards and
  * the primary navigation so they never drift out of sync.
@@ -8,7 +10,8 @@ export interface SectionMeta {
   title: string;
   tagline: string;
   description: string;
-  icon: string; // emoji keeps the MVP dependency-light
+  icon: IconName; // named glyph rendered by the Icon component
+  color?: string; // per-card token name (e.g. "--card-voting"), never a color literal
 }
 
 export const SECTIONS: SectionMeta[] = [
@@ -19,7 +22,8 @@ export const SECTIONS: SectionMeta[] = [
     tagline: "Know who's on your ballot",
     description:
       "Candidate profiles, plain-language issue explainers, a find-your-match quiz, how voting works, and side-by-side comparisons.",
-    icon: "🗳️",
+    icon: "voting",
+    color: "--card-voting",
   },
   {
     id: "tweets",
@@ -28,7 +32,8 @@ export const SECTIONS: SectionMeta[] = [
     tagline: "Posts, with context",
     description:
       "Recent and notable posts from candidates you follow, plus added context where a post needs it.",
-    icon: "💬",
+    icon: "tweets",
+    color: "--card-tweets",
   },
   {
     id: "causes",
@@ -37,7 +42,8 @@ export const SECTIONS: SectionMeta[] = [
     tagline: "What matters to you",
     description:
       "Tell Ask Easy Elect what you care about — housing, education, guns — and build a set of cause cards you can refine.",
-    icon: "🎯",
+    icon: "causes",
+    color: "--card-causes",
   },
   {
     id: "connect",
@@ -46,6 +52,7 @@ export const SECTIONS: SectionMeta[] = [
     tagline: "Find your people",
     description:
       "Local groups, civic events, and community projects tied to your causes — petitions, events, and ways to get involved.",
-    icon: "🤝",
+    icon: "connect",
+    color: "--card-connect",
   },
 ];

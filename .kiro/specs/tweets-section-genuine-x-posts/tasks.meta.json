@@ -1,0 +1,233 @@
+{
+  "pbtResults": {
+    "1. Write bug condition exploration test": {
+      "status": "passed",
+      "failingExample": "The exploration test FAILED on unfixed code as expected (PBT validation PASSED: the test correctly detected the bug). Three counterexamples confirm the root-cause analysis:\n\n(a) Fallback back-link host — Counterexample: fallback record t1 (@maura_healey). AssertionError: expected 'mass.gov' to be 'x.com'. Fallback sourceUrl hosts resolve to news/government/campaign domains (mass.gov, wbur.org, bostonglobe.com, nbcboston.com, cbsnews.com, yahoo.com, minogueforma.com), not x.com.\n\n(b) Fallback real counts — Counterexample: fallback record t1 with likes: 2140, reposts: 540 (documented display-only placeholders). genuine check (x.com host AND real counts) evaluated to false: expected true, received false. No fallback record is a genuine x.com post.\n\n(c) Live adapter back-link host — Counterexample: [handle=\"_\", id=\"00000\", likes=0, reposts=0]. AssertionError: expected 'twitter.com' to be 'x.com'. adaptRawResponse in server/src/posts/provider.ts builds https://twitter.com/${handle}/status/${id} instead of the x.com host.",
+      "lastRunTimestamp": 1792874795297
+    },
+    "2. Write preservation property tests (BEFORE implementing fix)": {
+      "status": "passed",
+      "lastRunTimestamp": 1792875046963
+    },
+    "3.5 Verify bug condition exploration test now passes": {
+      "status": "passed",
+      "lastRunTimestamp": 1792875413397
+    },
+    "3.6 Verify preservation tests still pass": {
+      "status": "passed",
+      "lastRunTimestamp": 1792875464690
+    }
+  },
+  "executionHistory": {
+    "1. Write bug condition exploration test": [
+      {
+        "executionId": "0d8df80d-997c-4d73-8938-43057b36ef4b",
+        "chatSessionId": "sess_d3655192-d63c-409d-8e6f-3b529835c832",
+        "timestamp": 1792874278687
+      },
+      {
+        "executionId": "0d8df80d-997c-4d73-8938-43057b36ef4b",
+        "chatSessionId": "sess_d3655192-d63c-409d-8e6f-3b529835c832",
+        "timestamp": 1792874283311
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792874700166
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792874704714
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792874810209
+      }
+    ],
+    "2. Write preservation property tests (BEFORE implementing fix)": [
+      {
+        "executionId": "0d8df80d-997c-4d73-8938-43057b36ef4b",
+        "chatSessionId": "sess_d3655192-d63c-409d-8e6f-3b529835c832",
+        "timestamp": 1792874278743
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792874700201
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792874813348
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792875066193
+      }
+    ],
+    "3.1 Change the live back-link host to x.com in `adaptRawResponse`": [
+      {
+        "executionId": "0d8df80d-997c-4d73-8938-43057b36ef4b",
+        "chatSessionId": "sess_d3655192-d63c-409d-8e6f-3b529835c832",
+        "timestamp": 1792874278814
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792874700248
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792875071580
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792875104906
+      }
+    ],
+    "3.2 Reduce the fallback dataset to genuine x.com posts only": [
+      {
+        "executionId": "0d8df80d-997c-4d73-8938-43057b36ef4b",
+        "chatSessionId": "sess_d3655192-d63c-409d-8e6f-3b529835c832",
+        "timestamp": 1792874278869
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792874700284
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792875107295
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792875182190
+      }
+    ],
+    "3.3 Update the fallback dataset header documentation": [
+      {
+        "executionId": "0d8df80d-997c-4d73-8938-43057b36ef4b",
+        "chatSessionId": "sess_d3655192-d63c-409d-8e6f-3b529835c832",
+        "timestamp": 1792874278906
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792874700312
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792875184443
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792875226578
+      }
+    ],
+    "3.4 Update existing property tests that encode the old buggy contract": [
+      {
+        "executionId": "0d8df80d-997c-4d73-8938-43057b36ef4b",
+        "chatSessionId": "sess_d3655192-d63c-409d-8e6f-3b529835c832",
+        "timestamp": 1792874278936
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792874700332
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792875229264
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792875330212
+      }
+    ],
+    "3.5 Verify bug condition exploration test now passes": [
+      {
+        "executionId": "0d8df80d-997c-4d73-8938-43057b36ef4b",
+        "chatSessionId": "sess_d3655192-d63c-409d-8e6f-3b529835c832",
+        "timestamp": 1792874278976
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792874700356
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792875332792
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792875423631
+      }
+    ],
+    "3.6 Verify preservation tests still pass": [
+      {
+        "executionId": "0d8df80d-997c-4d73-8938-43057b36ef4b",
+        "chatSessionId": "sess_d3655192-d63c-409d-8e6f-3b529835c832",
+        "timestamp": 1792874279009
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792874700376
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792875425983
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792875474734
+      }
+    ],
+    "4. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "0d8df80d-997c-4d73-8938-43057b36ef4b",
+        "chatSessionId": "sess_d3655192-d63c-409d-8e6f-3b529835c832",
+        "timestamp": 1792874279063
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792874700405
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792875477393
+      },
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792875620909
+      }
+    ],
+    "3. Fix for non-genuine posts in the Tweets feed (fabricated counts and non-x.com origins)": [
+      {
+        "executionId": "1fea173a-da40-4499-b838-a633a9d41db3",
+        "chatSessionId": "sess_d2c74c48-1f4c-4693-82f1-441fd6fc2ad6",
+        "timestamp": 1792875474777
+      }
+    ]
+  }
+}

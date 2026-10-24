@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { apiPost } from "../../lib/api";
-import { useApiData } from "../../lib/useApi";
+import { useApiData, useValidatedApiData } from "../../lib/useApi";
+import { validateCandidateList } from "../../lib/shape";
 import AsyncContent from "../../components/AsyncContent";
 import PartyBadge from "./PartyBadge";
 import FollowButton from "./FollowButton";
@@ -18,7 +19,10 @@ interface ScoreResponse {
  */
 export default function MatchQuiz() {
   const questionsState = useApiData<QuizQuestion[]>("/api/quiz");
-  const candidatesState = useApiData<Candidate[]>("/api/candidates");
+  const candidatesState = useValidatedApiData<Candidate[]>(
+    "/api/candidates",
+    validateCandidateList
+  );
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [results, setResults] = useState<MatchResult[] | null>(null);
   const [submitting, setSubmitting] = useState(false);

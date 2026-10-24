@@ -1,16 +1,18 @@
 .follow,
 .following {
+  /* Intentional full-round pill variant (999px is a shape value, not a color
+     literal). All other values are token-sourced with light-theme fallbacks. */
   border-radius: 999px;
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-2, 8px) var(--space-4, 16px);
   font-weight: 600;
   font-size: 0.9rem;
-  border: 1px solid var(--color-primary);
+  border: 1px solid var(--color-primary, #5f7fca);
   transition: background 0.12s ease, color 0.12s ease;
 }
 
 .follow {
-  background: var(--color-primary);
-  color: var(--color-primary-contrast);
+  background: var(--color-primary, #5f7fca);
+  color: var(--color-primary-contrast, #0e1322);
 }
 
 .follow:hover {
@@ -19,14 +21,14 @@
 
 .following {
   background: transparent;
-  color: var(--color-primary);
+  color: var(--color-primary, #5f7fca);
 }
 
 .following:hover {
-  background: var(--color-primary-soft);
+  background: var(--color-primary-soft, #dfe6f7);
 }
 
 .sm {
-  padding: 2px var(--space-3);
+  padding: var(--space-1, 4px) var(--space-3, 12px);
   font-size: 0.8rem;
 }

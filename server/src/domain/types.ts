@@ -21,6 +21,16 @@ export type Party =
   | "Green-Rainbow"
   | "Nonpartisan";
 
+/** Where a record's information originated, for attribution. */
+export interface SourceAttribution {
+  /** Human-readable publisher/source name, non-empty. */
+  name: string;
+  /** HTTP/HTTPS, 1–2048 chars, resolvable. */
+  url: string;
+  /** Retrieval-or-last-reviewed date, ISO 8601 (YYYY-MM-DD). Req 10.1. */
+  reviewedOn: string;
+}
+
 /** A single candidate's stance on one issue. */
 export interface CandidateStance {
   issueId: string;
@@ -28,6 +38,8 @@ export interface CandidateStance {
   position: string;
   /** Longer explanation of the stance, in both detail levels. */
   detail: Explain;
+  /** Where this specific position was proposed/stated. Req 2.1. */
+  source?: SourceAttribution;
 }
 
 export interface Candidate {
@@ -47,6 +59,8 @@ export interface Candidate {
   website?: string;
   /** Handle used to associate curated tweets, e.g. "@jane_for_ma". */
   handle?: string;
+  /** Where this candidate record's information originated. Req 3.1. */
+  source: SourceAttribution;
 }
 
 /** A policy area / issue with a plain-language explainer. */
@@ -87,6 +101,15 @@ export interface Tweet {
   inReplyTo?: string;
   /** Link back to the original source for attribution. */
   sourceUrl?: string;
+}
+
+/** Origin of a served posts payload. */
+export type PostsSource = "live" | "cache" | "fallback";
+
+/** Envelope returned by GET /tweets: the posts plus where they came from. */
+export interface TweetsResponse {
+  posts: Tweet[];
+  source: PostsSource;
 }
 
 /** A quiz question used by the find-your-match quiz (Task 8). */
