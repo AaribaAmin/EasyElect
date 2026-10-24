@@ -17,6 +17,20 @@ function expectExplain(v: unknown) {
   expect((e.expert as string).length).toBeGreaterThan(0);
 }
 
+/**
+ * Asserts a value has the dual-variant Explain {simple, expert} shape with
+ * both fields present as strings, without requiring non-empty content.
+ * Minimum_Viable_Records drawn from the official ballot legitimately carry
+ * empty narrative fields (no fabricated content, Req 5.2/5.3), so the shape
+ * must hold for every record but non-empty content only for researched ones.
+ */
+function expectExplainShape(v: unknown) {
+  expect(v).toBeTypeOf("object");
+  const e = v as { simple?: unknown; expert?: unknown };
+  expect(typeof e.simple).toBe("string");
+  expect(typeof e.expert).toBe("string");
+}
+
 describe("data endpoints", () => {
   it("serves candidates with dual-variant bios and valid issue refs", async () => {
     const res = await request(app).get("/api/candidates");
@@ -26,12 +40,27 @@ describe("data endpoints", () => {
     for (const c of res.body) {
       expect(c.id).toBeTypeOf("string");
       expect(c.name).toBeTypeOf("string");
-      expectExplain(c.bio);
+      // Every record carries the dual-variant bio shape. Minimum_Viable_Records
+      // legitimately leave the narrative empty (Req 5.2), so only the shape is
+      // required here; non-empty dual-variant bios are asserted below for the
+      // researched records.
+      expectExplainShape(c.bio);
       for (const s of c.stances) {
-        // Every stance references a real issue.
+        // Every stance references a real issue, and because a record only
+        // carries stances when they are researched and sourced, their details
+        // are genuine non-empty dual-variant content.
         expect(issuesById.has(s.issueId)).toBe(true);
         expectExplain(s.detail);
       }
+    }
+
+    // The researched records keep their non-empty dual-variant bios.
+    const byId = new Map(
+      (res.body as { id: string; bio: unknown }[]).map((c) => [c.id, c.bio])
+    );
+    for (const id of ["maura-healey", "mike-minogue"]) {
+      expect(byId.has(id)).toBe(true);
+      expectExplain(byId.get(id));
     }
   });
 

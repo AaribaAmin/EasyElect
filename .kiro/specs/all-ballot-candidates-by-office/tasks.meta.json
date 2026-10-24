@@ -1,5 +1,14 @@
 {
-  "pbtResults": {},
+  "pbtResults": {
+    "3.4 Write property test for Minimum_Viable_Record emptiness (Property 8)": {
+      "status": "passed",
+      "lastRunTimestamp": 1792878608330
+    },
+    "3.5 Write property test for party membership (Property 10, server side)": {
+      "status": "passed",
+      "lastRunTimestamp": 1792878722734
+    }
+  },
   "executionHistory": {
     "1.1 Add the two new party members to both domain type files": [
       {
@@ -11,6 +20,11 @@
         "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
         "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
         "timestamp": 1792877538450
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792877638359
       }
     ],
     "1.2 Add the two new party members to the client runtime validator": [
@@ -18,6 +32,16 @@
         "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
         "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
         "timestamp": 1792877533169
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792877641373
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878193469
       }
     ],
     "2.1 Add Minimum_Viable_Records for every remaining ballot candidate": [
@@ -25,6 +49,16 @@
         "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
         "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
         "timestamp": 1792877533247
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792877642389
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878192833
       }
     ],
     "3.1 Implement OFFICIAL_BALLOT_ROSTER and checkDatasetCompleteness": [
@@ -32,6 +66,16 @@
         "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
         "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
         "timestamp": 1792877533292
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878196576
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878360321
       }
     ],
     "4. Checkpoint - Ensure dataset and type tests pass": [
@@ -39,6 +83,16 @@
         "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
         "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
         "timestamp": 1792877533332
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878739120
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878982638
       }
     ],
     "5.1 Create groupCandidatesByRace in client/src/lib/raceGroups.ts": [
@@ -46,6 +100,16 @@
         "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
         "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
         "timestamp": 1792877533366
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878197787
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878359246
       }
     ],
     "6.1 Convert CandidatesList to grouped rendering": [
@@ -53,6 +117,16 @@
         "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
         "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
         "timestamp": 1792877533400
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878365962
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878460499
       }
     ],
     "6.2 Add race-group styles": [
@@ -60,6 +134,16 @@
         "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
         "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
         "timestamp": 1792877533441
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879144324
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879261755
       }
     ],
     "7.1 Guard empty office, stances, and bio in CandidateDetail": [
@@ -67,6 +151,16 @@
         "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
         "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
         "timestamp": 1792877533496
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878366965
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878458721
       }
     ],
     "8.1 Extend PartyBadge for the new members and unknown values": [
@@ -74,6 +168,16 @@
         "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
         "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
         "timestamp": 1792877533525
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878198750
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878358282
       }
     ],
     "8.2 Add the .psl badge style": [
@@ -81,6 +185,16 @@
         "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
         "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
         "timestamp": 1792877533557
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878367786
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878459847
       }
     ],
     "10. Final checkpoint - Run full build and test suites": [
@@ -88,6 +202,252 @@
         "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
         "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
         "timestamp": 1792877533587
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879267772
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879341470
+      }
+    ],
+    "2. Expand the candidate dataset to the full ballot": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878192911
+      }
+    ],
+    "1. Extend the Party union and runtime validator (shared contract)": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878193520
+      }
+    ],
+    "5. Implement the pure race-grouping helper": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878359280
+      }
+    ],
+    "3. Add the dataset completeness/validity helper": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878360354
+      }
+    ],
+    "7. Handle empty content in the candidate detail view": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878458792
+      }
+    ],
+    "8. Render every party label with a safe fallback": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878459896
+      }
+    ],
+    "3.2 Write property test for dataset completeness (Property 6)": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878546385
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878643612
+      }
+    ],
+    "3.3 Write property test for record structural validity (Property 7)": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878547296
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878645729
+      }
+    ],
+    "3.4 Write property test for Minimum_Viable_Record emptiness (Property 8)": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878548683
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878645005
+      }
+    ],
+    "3.5 Write property test for party membership (Property 10, server side)": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878549564
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878732530
+      }
+    ],
+    "5.2 Write property test: grouping partitions by race (Property 1)": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878989013
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879132062
+      }
+    ],
+    "5.3 Write property test: deterministic ordering (Property 2)": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878989950
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879133438
+      }
+    ],
+    "5.4 Write property test: filter soundness and completeness (Property 3)": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878991397
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879134405
+      }
+    ],
+    "5.5 Write property test: empty result yields no groups (Property 4)": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878992264
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879135944
+      }
+    ],
+    "5.6 Write property test: headings preserve verbatim office/district (Property 5)": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878993852
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879136818
+      }
+    ],
+    "5.7 Write property test: same-group records share raw office/district (Property 9)": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878994628
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879138186
+      }
+    ],
+    "9.1 Add the party-union parity test": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878997864
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879139097
+      }
+    ],
+    "9.2 Add the quiz-scoring regression test": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792878998814
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879140144
+      }
+    ],
+    "9. Add cross-cutting parity and regression tests": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879139147
+      }
+    ],
+    "6.3 Write component tests for CandidatesList": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879145637
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879262855
+      }
+    ],
+    "7.2 Write component tests for CandidateDetail": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879146549
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879263663
+      }
+    ],
+    "8.3 Write component tests for PartyBadge": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879147338
+      },
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879264637
+      }
+    ],
+    "6. Render grouped candidates in the candidate list": [
+      {
+        "executionId": "3eaf47b5-0d37-4528-916d-9772d1522458",
+        "chatSessionId": "sess_abd775df-a016-40f3-8930-cf1823763691",
+        "timestamp": 1792879261787
       }
     ]
   }

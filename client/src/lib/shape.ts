@@ -47,6 +47,8 @@ const PARTIES: readonly Party[] = [
   "Libertarian",
   "Green-Rainbow",
   "Nonpartisan",
+  "Socialism and Liberation",
+  "Unenrolled",
 ];
 
 /** The allowed values of the `TweetTab` union, mirrored from the domain type. */

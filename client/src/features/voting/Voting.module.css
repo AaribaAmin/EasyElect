@@ -27,6 +27,23 @@
   color: var(--color-primary);
 }
 
+.raceGroup {
+  margin-bottom: var(--space-6);
+}
+
+.raceGroup:last-child {
+  margin-bottom: 0;
+}
+
+.raceHeading {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));

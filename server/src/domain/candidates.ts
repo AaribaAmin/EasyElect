@@ -1,4 +1,16 @@
-import type { Candidate } from "./types.js";
+import type { Candidate, SourceAttribution } from "./types.js";
+
+/**
+ * Official_Ballot_Source attribution shared by every Minimum_Viable_Record:
+ * candidates drawn from the Massachusetts Secretary of the Commonwealth sample
+ * ballot (reviewed 2026-10-24) whose narrative fields are intentionally empty
+ * because no researched content has been verified yet. See Requirement 5.3.
+ */
+const OFFICIAL_BALLOT_SOURCE: SourceAttribution = {
+  name: "Massachusetts Secretary of the Commonwealth — Sample Ballot",
+  url: "https://www.sec.state.ma.us/WhereDoIVoteMA/ShowBallot/ViewMyBallot/BallotOut/ST/154/0/1?ipid=promo-link-block1",
+  reviewedOn: "2026-10-24",
+};
 
 /**
  * Real Massachusetts state-election candidate dataset.
@@ -210,6 +222,305 @@ export const candidates: Candidate[] = [
         },
       },
     ],
+  },
+
+  // ---------------------------------------------------------------------------
+  // Minimum_Viable_Records drawn verbatim from the Official_Ballot_Source
+  // (reviewed 2026-10-24). Identity/office/district/party are from the ballot;
+  // narrative fields are intentionally empty (no fabricated content, Req 5) and
+  // `website`/`handle` are omitted. See OFFICIAL_BALLOT_SOURCE above.
+  // ---------------------------------------------------------------------------
+
+  // Senator in Congress — Massachusetts
+  {
+    id: "edward-j-markey",
+    name: "Edward J. Markey",
+    party: "Democratic",
+    office: "Senator in Congress",
+    district: "Massachusetts",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+  {
+    id: "john-deaton",
+    name: "John Deaton",
+    party: "Republican",
+    office: "Senator in Congress",
+    district: "Massachusetts",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+  {
+    id: "shiva-ayyadurai",
+    name: "Shiva Ayyadurai",
+    party: "Independent",
+    office: "Senator in Congress",
+    district: "Massachusetts",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+  {
+    id: "joe-tache",
+    name: "Joe Tache",
+    party: "Socialism and Liberation",
+    office: "Senator in Congress",
+    district: "Massachusetts",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+
+  // Governor — Massachusetts (Independent ticket; Healey and Minogue above)
+  {
+    id: "james-and-kittredge",
+    name: "James and Kittredge",
+    party: "Independent",
+    office: "Governor",
+    district: "Massachusetts",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+
+  // Attorney General — Massachusetts
+  {
+    id: "andrea-joy-campbell",
+    name: "Andrea Joy Campbell",
+    party: "Democratic",
+    office: "Attorney General",
+    district: "Massachusetts",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+  {
+    id: "michael-c-walsh",
+    name: "Michael C. Walsh",
+    party: "Republican",
+    office: "Attorney General",
+    district: "Massachusetts",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+
+  // Secretary of State — Massachusetts
+  {
+    id: "william-francis-galvin",
+    name: "William Francis Galvin",
+    party: "Democratic",
+    office: "Secretary of State",
+    district: "Massachusetts",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+  {
+    id: "anne-r-brensley",
+    name: "Anne R. Brensley",
+    party: "Republican",
+    office: "Secretary of State",
+    district: "Massachusetts",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+
+  // Treasurer — Massachusetts
+  {
+    id: "deborah-b-goldberg",
+    name: "Deborah B. Goldberg",
+    party: "Democratic",
+    office: "Treasurer",
+    district: "Massachusetts",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+  {
+    id: "elizabeth-dionne",
+    name: "Elizabeth Dionne",
+    party: "Republican",
+    office: "Treasurer",
+    district: "Massachusetts",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+
+  // Auditor — Massachusetts
+  {
+    id: "diana-dizoglio",
+    name: "Diana DiZoglio",
+    party: "Democratic",
+    office: "Auditor",
+    district: "Massachusetts",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+  {
+    id: "al-ozonoff",
+    name: "Al Ozonoff",
+    party: "Libertarian",
+    office: "Auditor",
+    district: "Massachusetts",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+
+  // Representative in Congress — Second District
+  {
+    id: "james-p-mcgovern",
+    name: "James P. McGovern",
+    party: "Democratic",
+    office: "Representative in Congress",
+    district: "Second District",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+
+  // Councillor — Eighth District
+  {
+    id: "tara-j-jacobs",
+    name: "Tara J. Jacobs",
+    party: "Democratic",
+    office: "Councillor",
+    district: "Eighth District",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+
+  // Senator in General Court — Hampshire, Franklin & Worcester District
+  {
+    id: "joanne-m-comerford",
+    name: "Joanne M. Comerford",
+    party: "Democratic",
+    office: "Senator in General Court",
+    district: "Hampshire, Franklin & Worcester District",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+
+  // Representative in General Court — First Franklin District
+  {
+    id: "lora-l-wondolowski",
+    name: "Lora L. Wondolowski",
+    party: "Democratic",
+    office: "Representative in General Court",
+    district: "First Franklin District",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+  {
+    id: "amy-e-lavallee",
+    name: "Amy E. LaVallee",
+    party: "Unenrolled",
+    office: "Representative in General Court",
+    district: "First Franklin District",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+
+  // District Attorney — Northwestern District
+  {
+    id: "david-e-sullivan",
+    name: "David E. Sullivan",
+    party: "Democratic",
+    office: "District Attorney",
+    district: "Northwestern District",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+
+  // Register of Probate — Franklin County
+  {
+    id: "daniel-francis-graves",
+    name: "Daniel Francis Graves",
+    party: "Democratic",
+    office: "Register of Probate",
+    district: "Franklin County",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+
+  // Sheriff (Vacancy) — Franklin County
+  {
+    id: "lori-m-streeter",
+    name: "Lori M. Streeter",
+    party: "Democratic",
+    office: "Sheriff (Vacancy)",
+    district: "Franklin County",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+  {
+    id: "gary-edward-gagnon",
+    name: "Gary Edward Gagnon",
+    party: "Independent",
+    office: "Sheriff (Vacancy)",
+    district: "Franklin County",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+  {
+    id: "jon-j-hall",
+    name: "Jon J. Hall",
+    party: "Unenrolled",
+    office: "Sheriff (Vacancy)",
+    district: "Franklin County",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
+  },
+
+  // Council of Governments Executive Committee — Franklin County
+  {
+    id: "jane-m-peirce",
+    name: "Jane M. Peirce",
+    party: "Unenrolled",
+    office: "Council of Governments Executive Committee",
+    district: "Franklin County",
+    tagline: "",
+    bio: { simple: "", expert: "" },
+    stances: [],
+    source: OFFICIAL_BALLOT_SOURCE,
   },
 ];
 

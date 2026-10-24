@@ -52,4 +52,44 @@ describe("scoreQuiz", () => {
     expect(Object.keys(candidateIssueValues)).toContain("maura-healey");
     expect(candidateIssueValues["maura-healey"].housing).toBe(-2);
   });
+
+  // Regression (Req 5 side effect): growing the dataset to the full 26-candidate
+  // ballot introduced 24 stance-less Minimum_Viable_Records. Those records have
+  // no entry in candidateIssueValues, so they must score 0 and rank behind the
+  // researched candidates (Healey, Minogue) — which keep their scores/ranking.
+  it("keeps researched candidates ranked ahead of stance-less ballot records", () => {
+    // Reuse the existing Minogue-leaning answer set.
+    const answers = [
+      { issueId: "housing", value: 2 },
+      { issueId: "climate", value: 2 },
+      { issueId: "transit", value: 2 },
+      { issueId: "healthcare", value: 1 },
+    ];
+    const results = scoreQuiz(answers);
+
+    // The researched candidate still ranks first with a perfect score even
+    // after the dataset grew to the full ballot.
+    expect(results[0].candidateId).toBe("mike-minogue");
+    expect(results[0].score).toBe(100);
+
+    // Every candidate id drives exactly one result and the whole 26-candidate
+    // ballot is covered.
+    expect(results).toHaveLength(26);
+
+    const researchedIds = new Set(Object.keys(candidateIssueValues));
+    const lastResearchedRank = Math.max(
+      ...results
+        .map((r, i) => ({ r, i }))
+        .filter((x) => researchedIds.has(x.r.candidateId))
+        .map((x) => x.i)
+    );
+
+    results.forEach((result, index) => {
+      if (researchedIds.has(result.candidateId)) return;
+      // Stance-less records (not healey/minogue) score 0 ...
+      expect(result.score).toBe(0);
+      // ... and sort after every researched candidate.
+      expect(index).toBeGreaterThan(lastResearchedRank);
+    });
+  });
 });

@@ -6,6 +6,7 @@ import { useFollow } from "../../context/FollowContext";
 import AsyncContent from "../../components/AsyncContent";
 import PartyBadge from "./PartyBadge";
 import FollowButton from "./FollowButton";
+import { groupCandidatesByRace } from "../../lib/raceGroups";
 import type { Candidate, Party } from "../../types/domain";
 import styles from "./Voting.module.css";
 
@@ -28,19 +29,10 @@ export default function CandidatesList() {
     return Array.from(set);
   }, [state.data]);
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return (state.data ?? []).filter((c) => {
-      const matchesParty = party === "all" || c.party === party;
-      const matchesQuery =
-        q === "" ||
-        c.name.toLowerCase().includes(q) ||
-        c.office.toLowerCase().includes(q) ||
-        c.party.toLowerCase().includes(q) ||
-        c.district.toLowerCase().includes(q);
-      return matchesParty && matchesQuery;
-    });
-  }, [state.data, query, party]);
+  const groups = useMemo(
+    () => groupCandidatesByRace(state.data ?? [], { query, party }),
+    [state.data, query, party]
+  );
 
   return (
     <div>
@@ -73,41 +65,58 @@ export default function CandidatesList() {
 
       <AsyncContent state={state}>
         {() =>
-          filtered.length === 0 ? (
+          groups.length === 0 ? (
             <p className={`card ${styles.empty}`}>
               No candidates match your search.
             </p>
           ) : (
-            <ul
-              className={styles.grid}
-              style={{ listStyle: "none", padding: 0, margin: 0 }}
-            >
-              {filtered.map((c) => (
-                <li key={c.id}>
-                  <Link
-                    to={`/voting/candidates/${c.id}`}
-                    className={styles.candidateCard}
-                  >
-                    <div className={styles.cardTopRow}>
-                      <PartyBadge party={c.party} />
-                      {isFollowing(c.id) && (
-                        <span className="badge" aria-label="You follow this candidate">
-                          Following
-                        </span>
-                      )}
-                    </div>
-                    <h3 className={styles.candidateName}>{c.name}</h3>
-                    <p className={styles.office}>
-                      {c.office} · {c.district}
-                    </p>
-                    <p className={styles.cardTagline}>{c.tagline}</p>
-                    <div style={{ marginTop: "var(--space-3)" }}>
-                      <FollowButton candidateId={c.id} size="sm" />
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            groups.map((group) => (
+              <section
+                key={`${group.office}\u0000${group.district}`}
+                className={styles.raceGroup}
+              >
+                <h2 className={styles.raceHeading}>
+                  {group.office
+                    ? `${group.office} · ${group.district}`
+                    : group.district}
+                </h2>
+                <ul
+                  className={styles.grid}
+                  style={{ listStyle: "none", padding: 0, margin: 0 }}
+                >
+                  {group.candidates.map((c) => (
+                    <li key={c.id}>
+                      <Link
+                        to={`/voting/candidates/${c.id}`}
+                        className={styles.candidateCard}
+                      >
+                        <div className={styles.cardTopRow}>
+                          <PartyBadge party={c.party} />
+                          {isFollowing(c.id) && (
+                            <span
+                              className="badge"
+                              aria-label="You follow this candidate"
+                            >
+                              Following
+                            </span>
+                          )}
+                        </div>
+                        <h3 className={styles.candidateName}>{c.name}</h3>
+                        <p className={styles.office}>
+                          {c.office
+                            ? `${c.office} · ${c.district}`
+                            : c.district}
+                        </p>
+                        <p className={styles.cardTagline}>{c.tagline}</p>
+                        <div style={{ marginTop: "var(--space-3)" }}>
+                          <FollowButton candidateId={c.id} size="sm" />
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))
           )
         }
       </AsyncContent>

@@ -31,6 +31,11 @@ const clientTypesPath = path.resolve(
   here,
   "../../../client/src/types/domain.ts",
 );
+// The client runtime validator's PARTIES array lives under client/src/lib/.
+const clientShapePath = path.resolve(
+  here,
+  "../../../client/src/lib/shape.ts",
+);
 
 /** The shapes shared across the Data_API that must stay structurally equal. */
 const SHARED_SHAPES = [
@@ -167,5 +172,113 @@ describe("Property 24: client and server domain shapes are structurally equivale
       }),
       { numRuns: 100 },
     );
+  });
+});
+
+/**
+ * Party-union parity across the two domain type files and the client runtime
+ * validator.
+ *
+ * The `Party` type is a string-literal union declared in both
+ * server/src/domain/types.ts and client/src/types/domain.ts, and the member
+ * set is mirrored a third time at runtime by the `PARTIES` array in
+ * client/src/lib/shape.ts (which `validateCandidate` uses to accept a party).
+ * If any of the three drifts, a valid server party could be rejected by the
+ * client validator, or the two unions could diverge silently. This block pins
+ * all three to the same member set.
+ *
+ * Validates: Requirements 7.1, 7.2, 7.4
+ */
+
+/**
+ * Extracts the quoted string-literal members of an `export type <Name> = ...`
+ * union. Reads from the `=` to the terminating `;`, then pulls every
+ * single/double-quoted literal in declaration order. Returns undefined when
+ * the union is not declared in the source.
+ */
+function extractUnionMembers(
+  source: string,
+  name: string,
+): string[] | undefined {
+  const header = new RegExp(`export\\s+type\\s+${name}\\s*=`);
+  const match = header.exec(source);
+  if (!match) return undefined;
+
+  const start = match.index + match[0].length;
+  const end = source.indexOf(";", start);
+  const block = end === -1 ? source.slice(start) : source.slice(start, end);
+
+  const members: string[] = [];
+  const literal = /"([^"]*)"|'([^']*)'/g;
+  let m: RegExpExecArray | null;
+  while ((m = literal.exec(block)) !== null) {
+    members.push(m[1] ?? m[2]);
+  }
+  return members;
+}
+
+/**
+ * Extracts the quoted string-literal members of a
+ * `const PARTIES: readonly Party[] = [ ... ]` array. Reads from the opening
+ * `[` to the matching `]`, then pulls every quoted literal in order. Returns
+ * undefined when the array is not declared in the source.
+ */
+function extractPartiesArray(source: string): string[] | undefined {
+  const header = /PARTIES\s*:\s*readonly\s+Party\[\]\s*=\s*\[/;
+  const match = header.exec(source);
+  if (!match) return undefined;
+
+  // Start the array scan at the opening `[` of the initializer — which is the
+  // last character of the matched header — so the `[` inside `Party[]` in the
+  // type annotation is not mistaken for the array opener.
+  const openIndex = match.index + match[0].length - 1;
+  const closeIndex = source.indexOf("]", openIndex + 1);
+  if (openIndex === -1 || closeIndex === -1) return undefined;
+  const block = source.slice(openIndex + 1, closeIndex);
+
+  const members: string[] = [];
+  const literal = /"([^"]*)"|'([^']*)'/g;
+  let m: RegExpExecArray | null;
+  while ((m = literal.exec(block)) !== null) {
+    members.push(m[1] ?? m[2]);
+  }
+  return members;
+}
+
+const clientShapeSource = readFileSync(clientShapePath, "utf8");
+
+describe("Party union parity across domain types and the client validator", () => {
+  it("server and client Party unions have identical, equal-length member sets", () => {
+    const serverMembers = extractUnionMembers(serverSource, "Party");
+    const clientMembers = extractUnionMembers(clientSource, "Party");
+
+    // Sanity: both unions parsed to a non-empty member list.
+    expect(serverMembers).toBeDefined();
+    expect(clientMembers).toBeDefined();
+    expect(serverMembers!.length).toBeGreaterThan(0);
+
+    // Equal length guards against a member present in only one file.
+    expect(clientMembers!.length).toBe(serverMembers!.length);
+
+    // Identical sets regardless of order.
+    expect(new Set(clientMembers)).toEqual(new Set(serverMembers));
+
+    // No duplicate members slipped into either union.
+    expect(new Set(serverMembers).size).toBe(serverMembers!.length);
+    expect(new Set(clientMembers).size).toBe(clientMembers!.length);
+  });
+
+  it("shape.ts PARTIES array equals the client Party union member set", () => {
+    const clientMembers = extractUnionMembers(clientSource, "Party");
+    const partiesArray = extractPartiesArray(clientShapeSource);
+
+    expect(clientMembers).toBeDefined();
+    expect(partiesArray).toBeDefined();
+    expect(partiesArray!.length).toBeGreaterThan(0);
+
+    // Equal length guards against the runtime validator drifting from the union.
+    expect(partiesArray!.length).toBe(clientMembers!.length);
+    expect(new Set(partiesArray)).toEqual(new Set(clientMembers));
+    expect(new Set(partiesArray).size).toBe(partiesArray!.length);
   });
 });

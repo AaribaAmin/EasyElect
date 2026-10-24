@@ -38,7 +38,7 @@ export default function CandidateDetail() {
               <div>
                 <h2 style={{ marginBottom: 4 }}>{c.name}</h2>
                 <p className={styles.office} style={{ margin: 0 }}>
-                  {c.office} · {c.district}
+                  {c.office ? `${c.office} · ${c.district}` : c.district}
                 </p>
               </div>
               <div style={{ display: "flex", gap: "var(--space-3)", alignItems: "center" }}>
@@ -53,7 +53,9 @@ export default function CandidateDetail() {
 
             <section aria-label="Biography" className="card" style={{ marginBottom: "var(--space-5)" }}>
               <h3>About</h3>
-              <Explainer content={c.bio} />
+              {(c.bio.simple !== "" || c.bio.expert !== "") && (
+                <Explainer content={c.bio} />
+              )}
               {c.website && (
                 <p style={{ marginBottom: 0 }}>
                   <a href={c.website} target="_blank" rel="noopener noreferrer">
@@ -83,19 +85,23 @@ export default function CandidateDetail() {
 
             <section aria-label="Positions">
               <h3>Where {c.name.split(" ")[0]} stands</h3>
-              {c.stances.map((s) => {
-                const issue = issuesById.get(s.issueId);
-                return (
-                  <div key={s.issueId} className={styles.stance}>
-                    <span className={styles.stanceIssue}>
-                      <span aria-hidden="true">{issue?.icon ?? "•"}</span>
-                      {issue?.title ?? s.issueId}
-                    </span>
-                    <p className={styles.stancePosition}>{s.position}</p>
-                    <Explainer content={s.detail} />
-                  </div>
-                );
-              })}
+              {c.stances.length === 0 ? (
+                <p>Positions are not yet available for this candidate.</p>
+              ) : (
+                c.stances.map((s) => {
+                  const issue = issuesById.get(s.issueId);
+                  return (
+                    <div key={s.issueId} className={styles.stance}>
+                      <span className={styles.stanceIssue}>
+                        <span aria-hidden="true">{issue?.icon ?? "•"}</span>
+                        {issue?.title ?? s.issueId}
+                      </span>
+                      <p className={styles.stancePosition}>{s.position}</p>
+                      <Explainer content={s.detail} />
+                    </div>
+                  );
+                })
+              )}
             </section>
           </div>
         )}
