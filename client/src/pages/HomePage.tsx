@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
 import { SECTIONS } from "../lib/sections";
-import ApiStatus from "../components/ApiStatus";
-import AiStatus from "../components/AiStatus";
 import Icon from "../components/icons/Icon";
 import styles from "./HomePage.module.css";
 
@@ -10,24 +8,12 @@ export default function HomePage() {
     <div>
       <section className={styles.hero}>
         <h1 className={styles.title}>
-          Politics, made <span>easy to understand</span>.
+          Politics made <span className={styles.titleAccent}>easy</span>.
         </h1>
         <p className={styles.subtitle}>
-          Easy Elect helps you make sense of the Massachusetts State Primary —
-          who's running, what they stand for, and how to get involved. No jargon
-          unless you want it.
+          EasyElect helps you make sense of the Massachusetts State Primary —
+          who's running, what they stand for, and how to get involved.
         </p>
-        <div
-          style={{
-            display: "flex",
-            gap: "var(--space-2)",
-            justifyContent: "center",
-            flexWrap: "wrap",
-          }}
-        >
-          <ApiStatus />
-          <AiStatus />
-        </div>
       </section>
 
       <nav aria-label="Sections" className={styles.cards}>
@@ -45,7 +31,12 @@ export default function HomePage() {
             <span className={styles.icon} aria-hidden="true">
               <Icon name={s.icon} decorative />
             </span>
-            <h2 className={styles.cardTitle}>{s.title}</h2>
+            <h2
+              className={styles.cardTitle}
+              style={{ textTransform: "uppercase", fontSize: "1.55rem" }}
+            >
+              {s.title}
+            </h2>
             <p className={styles.tagline}>{s.tagline}</p>
             <p className={styles.description}>{s.description}</p>
             <span className={styles.cta}>Open {s.title} →</span>

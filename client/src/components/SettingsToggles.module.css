@@ -23,7 +23,7 @@
 }
 
 .segActive {
-  background: var(--color-primary);
+  background: #388557;
   color: var(--color-primary-contrast);
 }
 

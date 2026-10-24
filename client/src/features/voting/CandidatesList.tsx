@@ -88,7 +88,7 @@ export default function CandidatesList() {
                     <li key={c.id}>
                       <Link
                         to={`/voting/candidates/${c.id}`}
-                        className={styles.candidateCard}
+                        className={styles.candidateCard} data-party={c.party}
                       >
                         <div className={styles.cardTopRow}>
                           <PartyBadge party={c.party} />

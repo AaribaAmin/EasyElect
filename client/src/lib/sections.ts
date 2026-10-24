@@ -21,7 +21,7 @@ export const SECTIONS: SectionMeta[] = [
     title: "Voting",
     tagline: "Know who's on your ballot",
     description:
-      "Candidate profiles, plain-language issue explainers, a find-your-match quiz, how voting works, and side-by-side comparisons.",
+      "View candidate profiles, take a find-your-match quiz, and learn how voting works.",
     icon: "voting",
     color: "--card-voting",
   },
@@ -31,7 +31,7 @@ export const SECTIONS: SectionMeta[] = [
     title: "Tweets",
     tagline: "Posts, with context",
     description:
-      "Recent and notable posts from candidates you follow, plus added context where a post needs it.",
+      "See what politicians are saying and discover the bigger picture.",
     icon: "tweets",
     color: "--card-tweets",
   },
